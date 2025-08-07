@@ -39,7 +39,7 @@ Ele poderá adquirir os dados do usuário com o callback code (validade de 30s) 
 Junto a este repositório, tem uma pasta teste, que dentro dela tem o arquivo [index.py](https://github.com/Hsyst/haap/blob/main/teste/index.py), e este código é um exemplo de Servidor Externo, então, eu recomendo ler este código para entender como implementar no seu serviço o login com HAAP.
 
 ## Funcionamento de páginas
-Caso vocẽ queira utilizar o HAAP como um web server, isso é possivel, e basicamente, nós temos duas pastas que representam o "/" da web, que no caso, é o:
+Caso você queira utilizar o HAAP como um web server, isso é possivel, e basicamente, nós temos duas pastas que representam o "/" da web, que no caso, é o:
 
 - service/
 Diretório de arquivos do serviço, nada mais que a pasta onde ficam as páginas que não precisam de autenticação.
