@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - HAAP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6e40c9;
+            --secondary: #00e0ff;
+            --dark: #121212;
+            --card: #1e1e1e;
+            --text: #ffffff;
+            --text-light: #e0e0e0;
+            --error: #ff4d4f;
+            --success: #52c41a;
+            --sidebar-width: 240px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark);
+            color: var(--text);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--card);
+            padding: 1.5rem;
+            position: fixed;
+            height: 100vh;
+            transition: transform 0.3s ease;
+            z-index: 100;
+        }
+
+        .logo {
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.25rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border-radius: 6px;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            gap: 0.75rem;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(110, 64, 201, 0.1);
+            color: var(--text);
+        }
+
+        .nav-link.active {
+            background-color: rgba(110, 64, 201, 0.2);
+            color: var(--primary);
+        }
+
+        .nav-link i {
+            width: 24px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background-color: var(--card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .card-value {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-description {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .primary-card {
+            border-left: 4px solid var(--primary);
+        }
+
+        .secondary-card {
+            border-left: 4px solid var(--secondary);
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .action-btn {
+            padding: 0.75rem 1.25rem;
+            border-radius: 6px;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background-color: #5d36b0;
+            transform: translateY(-2px);
+        }
+
+        .action-btn.secondary {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .action-btn.secondary:hover {
+            background-color: rgba(110, 64, 201, 0.1);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 101;
+        }
+
+        .toast {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            padding: 1rem;
+            border-radius: 6px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.error {
+            background-color: var(--error);
+        }
+
+        .toast.success {
+            background-color: var(--success);
+        }
+
+        /* Activity styles */
+        .activity-list {
+            list-style: none;
+        }
+
+        .activity-item {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(110, 64, 201, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-description {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .activity-time {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+                padding-top: 4rem;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .quick-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <div class="logo-icon">H</div>
+            <div class="logo-text">HAAP</div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link active">
+                    <i>📊</i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="profile.html" class="nav-link">
+                    <i>👤</i>
+                    <span>Perfil</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="external-links.html" class="nav-link">
+                    <i>🔗</i>
+                    <span>Links Externos</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/login.html" class="nav-link" id="logoutBtn">
+                    <i>🚪</i>
+                    <span>Sair</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <div class="header">
+            <h1 class="page-title">Dashboard</h1>
+            <div class="user-menu">
+                <img src="" alt="Avatar" class="user-avatar" id="userAvatar">
+            </div>
+        </div>
+
+        <div class="card-grid">
+            <div class="card primary-card">
+                <h3 class="card-title">Links Externos</h3>
+                <div class="card-value" id="externalLinksCount">0</div>
+                <p class="card-description">Total de links de login externo criados</p>
+            </div>
+
+            <div class="card secondary-card">
+                <h3 class="card-title">Logins Externos</h3>
+                <div class="card-value" id="externalLoginsCount">0</div>
+                <p class="card-description">Total de usos do seu link (caso tenha)</p>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">Conta</h3>
+                <div class="card-value" id="accountStatus">Ativa</div>
+                <p class="card-description">Status da sua conta</p>
+            </div>
+        </div>
+
+        <div class="quick-actions">
+            <a href="external-links.html" class="action-btn">
+                <i>➕</i>
+                <span>Criar Link Externo</span>
+            </a>
+            <a href="profile.html" class="action-btn secondary">
+                <i>⚙️</i>
+                <span>Configurar Perfil</span>
+            </a>
+        </div>
+
+        <h2 class="section-title">Atividade Recente</h2>
+        <div class="card">
+            <ul class="activity-list" id="activityList">
+                <li class="empty-state">Carregando atividades...</li>
+            </ul>
+        </div>
+    </main>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('sidebar');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const toast = document.getElementById('toast');
+            const userAvatar = document.getElementById('userAvatar');
+            const externalLinksCount = document.getElementById('externalLinksCount');
+            const externalLoginsCount = document.getElementById('externalLoginsCount');
+            const accountStatus = document.getElementById('accountStatus');
+            const activityList = document.getElementById('activityList');
+
+            // Toggle mobile menu
+            mobileMenuBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+            });
+
+            // Logout
+            logoutBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+
+                try {
+                    const response = await fetch('/api/logout', {
+                        method: 'POST',
+                        credentials: 'include'
+                    });
+
+                    if (response.ok) {
+                        window.location.href = '/login.html';
+                    } else {
+                        const data = await response.json();
+                        throw new Error(data.error || 'Erro ao fazer logout');
+                    }
+                } catch (error) {
+                    showToast(error.message, 'error');
+                }
+            });
+
+            // Load user data and dashboard stats
+            async function loadDashboardData() {
+                try {
+                    // Load user profile
+                    const profileResponse = await fetch('/api/profile', {
+                        credentials: 'include'
+                    });
+
+                    const user = await profileResponse.json();
+
+                    if (!profileResponse.ok) {
+                        throw new Error(user.error || 'Erro ao carregar perfil');
+                    }
+
+                    // Set user avatar
+                    if (user.profile_picture) {
+                        userAvatar.src = user.profile_picture;
+                    } else {
+                        userAvatar.src = '/assets/default-profile.png';
+                    }
+
+                    // Set account status
+                    accountStatus.textContent = 'Ativa'
+
+                    // Load external links count
+                    const linksResponse = await fetch('/api/external-links', {
+                        credentials: 'include'
+                    });
+
+                    const links = await linksResponse.json();
+
+                    if (linksResponse.ok) {
+                        externalLinksCount.textContent = links.length;
+
+                        // Load external logins count
+                        let totalLogins = 0;
+                        for (const link of links) {
+                            const loginsResponse = await fetch(`/api/external-links/${link.id}/logins`, {
+                                credentials: 'include'
+                            });
+
+                            if (loginsResponse.ok) {
+                                const logins = await loginsResponse.json();
+                                totalLogins += logins.length;
+                            }
+                        }
+
+                        externalLoginsCount.textContent = totalLogins;
+                    }
+
+                    // Load recent activity
+                    const activityResponse = await fetch('/api/activity', {
+                        credentials: 'include'
+                    });
+
+                    if (activityResponse.ok) {
+                        const activities = await activityResponse.json();
+                        renderActivities(activities);
+                    } else {
+                        const error = await activityResponse.json();
+                        throw new Error(error.error || 'Erro ao carregar atividades');
+                    }
+
+                } catch (error) {
+                    showToast(error.message, 'error');
+
+                    // If not authenticated, redirect to login
+                    if (error.message.includes('Não autenticado') ||
+                        error.message.includes('Token inválido')) {
+                        window.location.href = '/login.html';
+                    } else {
+                        // Show empty state for activities if there's an error
+                        activityList.innerHTML = `
+                            <li class="empty-state">Não foi possível carregar as atividades recentes</li>
+                        `;
+                    }
+                }
+            }
+
+            // Render activities
+            function renderActivities(activities) {
+                if (!activities || activities.length === 0) {
+                    activityList.innerHTML = `
+                        <li class="empty-state">Nenhuma atividade recente encontrada</li>
+                    `;
+                    return;
+                }
+
+                activityList.innerHTML = activities.map(activity => {
+                    let icon = '📅';
+                    let title = activity.type;
+                    let description = '';
+                    let time = new Date(activity.created_at).toLocaleString();
+
+                    switch (activity.type) {
+                        case 'external_link_created':
+                            icon = '🔗';
+                            title = 'Link externo criado';
+                            description = `Você criou um novo link para ${activity.data.service_name}`;
+                            break;
+                        case 'external_login':
+                            icon = '🔑';
+                            title = 'Login externo realizado';
+                            description = `Alguém usou seu link para ${activity.data.service_name}`;
+                            break;
+                        case 'profile_updated':
+                            icon = '👤';
+                            title = 'Perfil atualizado';
+                            description = 'Você atualizou suas informações de perfil';
+                            break;
+                        case 'password_changed':
+                            icon = '🔒';
+                            title = 'Senha alterada';
+                            description = 'Você alterou sua senha';
+                            break;
+                    }
+
+                    return `
+                        <li class="activity-item">
+                            <div class="activity-icon">${icon}</div>
+                            <div class="activity-content">
+                                <div class="activity-title">${title}</div>
+                                <div class="activity-description">${description}</div>
+                            </div>
+                            <div class="activity-time">${time}</div>
+                        </li>
+                    `;
+                }).join('');
+            }
+
+            function showToast(message, type) {
+                toast.textContent = message;
+                toast.className = 'toast ' + type;
+                toast.classList.add('show');
+
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 5000);
+            }
+
+            // Initialize dashboard
+            loadDashboardData();
+        });
+    </script>
+</body>
+</html>

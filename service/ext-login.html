@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autorizar Login - HAAP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6e40c9;
+            --secondary: #00e0ff;
+            --dark: #121212;
+            --card: #1e1e1e;
+            --text: #ffffff;
+            --text-light: #e0e0e0;
+            --error: #ff4d4f;
+            --success: #52c41a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .card {
+            background-color: var(--card);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .service-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .service-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .service-details h2 {
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .service-details p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .permissions {
+            margin-bottom: 2rem;
+        }
+
+        .permissions h3 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .permission-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .permission-item i {
+            color: var(--primary);
+        }
+
+        .auth-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #5d36b0;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid #333;
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top: 3px solid var(--primary);
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 1.5rem;
+            }
+
+            .auth-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="card">
+            <div class="logo">
+                <h1>HAAP</h1>
+            </div>
+
+            <div class="service-info" id="serviceInfo">
+                <div class="service-icon" id="serviceIcon">?</div>
+                <div class="service-details">
+                    <h2 id="serviceName">Carregando serviço...</h2>
+                    <p id="serviceCreator">Verificando informações</p>
+                </div>
+            </div>
+
+            <div class="permissions">
+                <h3>Este serviço solicita acesso a:</h3>
+                <div id="permissionsList">
+                    <div class="permission-item">
+                        <i>⏳</i>
+                        <span>Carregando permissões...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="auth-actions">
+                <button class="btn btn-secondary" id="denyBtn" onclick="window.location.href='/dashboard.html'">Negar</button>
+                <button class="btn btn-primary" id="approveBtn">Autorizar</button>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Processando autorização...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const serviceIcon = document.getElementById('serviceIcon');
+            const serviceName = document.getElementById('serviceName');
+            const serviceCreator = document.getElementById('serviceCreator');
+            const permissionsList = document.getElementById('permissionsList');
+            const denyBtn = document.getElementById('denyBtn');
+            const approveBtn = document.getElementById('approveBtn');
+            const loading = document.getElementById('loading');
+
+            // Get link code from URL hash
+            const linkCode = window.location.hash.substring(1).split('=')[1];
+
+            if (!linkCode) {
+                renderError('Código de link inválido');
+                return;
+            }
+
+            // Fetch link info
+            try {
+                const response = await fetch(`/api/external-links/${linkCode}`);
+                const link = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(link.error || 'Erro ao carregar informações do link');
+                }
+
+                // Render service info
+                serviceIcon.textContent = link.service_name.charAt(0).toUpperCase();
+                serviceName.textContent = link.service_name;
+                serviceCreator.textContent = `Criado por ${link.display_name || link.username}`;
+
+                // Render permissions
+                permissionsList.innerHTML = '';
+                const provides = link.provides;
+
+                provides.forEach(permission => {
+                    const item = document.createElement('div');
+                    item.className = 'permission-item';
+
+                    let icon = '🔍';
+                    let text = '';
+
+                    switch(permission) {
+                        case 'id':
+                            icon = '🆔';
+                            text = 'Seu ID de usuário';
+                            break;
+                        case 'username':
+                            icon = '👤';
+                            text = 'Seu nome de usuário';
+                            break;
+                        case 'email':
+                            icon = '✉️';
+                            text = 'Seu endereço de e-mail';
+                            break;
+                        case 'display_name':
+                            icon = '🏷️';
+                            text = 'Seu nome de exibição';
+                            break;
+                        case 'profile_picture':
+                            icon = '🖼️';
+                            text = 'Sua foto de perfil';
+                            break;
+                    }
+
+                    item.innerHTML = `
+                        <i>${icon}</i>
+                        <span>${text}</span>
+                    `;
+
+                    permissionsList.appendChild(item);
+                });
+
+            } catch (error) {
+                renderError(error.message);
+            }
+
+            // Handle deny button
+            denyBtn.addEventListener('click', async () => {
+                try {
+                    const response = await fetch(`/api/external-links/${linkCode}/authorize`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            authorize: false
+                        }),
+                        credentials: 'include'
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Erro ao processar negação');
+                    }
+
+                    // Redirect to service homepage
+                    window.location.href = data.redirect_to;
+
+                } catch (error) {
+                    renderError(error.message);
+                }
+            });
+
+            // Handle approve button
+            approveBtn.addEventListener('click', async () => {
+                loading.style.display = 'block';
+                approveBtn.disabled = true;
+                denyBtn.disabled = true;
+
+                try {
+                    const response = await fetch(`/api/external-links/${linkCode}/authorize`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            authorize: true
+                        }),
+                        credentials: 'include'
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Erro ao processar autorização');
+                    }
+
+                    // Redirect to callback URL
+                    window.location.href = data.redirect_to;
+
+                } catch (error) {
+                    loading.style.display = 'none';
+                    approveBtn.disabled = false;
+                    denyBtn.disabled = false;
+                    renderError(error.message);
+                }
+            });
+
+            function renderError(message) {
+                permissionsList.innerHTML = `
+                    <div class="permission-item" style="color: var(--error)">
+                        <i>❌</i>
+                        <span>${message}</span>
+                    </div>
+                `;
+
+                approveBtn.style.display = 'none';
+                denyBtn.textContent = 'Voltar';
+                denyBtn.onclick = () => {
+                    window.location.href = '/login.html';
+                };
+            }
+        });
+    </script>
+</body>
+</html>
