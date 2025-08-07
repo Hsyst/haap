@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - HAAP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6e40c9;
+            --secondary: #00e0ff;
+            --dark: #121212;
+            --card: #1e1e1e;
+            --text: #ffffff;
+            --text-light: #e0e0e0;
+            --error: #ff4d4f;
+            --success: #52c41a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .card {
+            background-color: var(--card);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .logo p {
+            color: var(--text-light);
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            position: absolute;
+            top: 0.75rem;
+            left: 1rem;
+            color: var(--text-light);
+            transition: all 0.2s ease;
+            pointer-events: none;
+            background-color: var(--card);
+            padding: 0 0.25rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #333;
+            border-radius: 6px;
+            background-color: var(--dark);
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-group input:focus + label,
+        .form-group input:not(:placeholder-shown) + label {
+            top: -0.5rem;
+            left: 0.75rem;
+            font-size: 0.75rem;
+            color: var(--primary);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #5d36b0;
+        }
+
+        .links {
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .links a {
+            color: var(--secondary);
+            text-decoration: none;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .toast {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            padding: 1rem;
+            border-radius: 6px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.error {
+            background-color: var(--error);
+        }
+
+        .toast.success {
+            background-color: var(--success);
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="card">
+            <div class="logo">
+                <h1>HAAP</h1>
+                <p>Hsyst Auth Authorization Plugin</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <input type="text" id="login" name="login" placeholder=" " required>
+                    <label for="login">Usuário ou E-mail</label>
+                    <div class="error-message" id="loginError"></div>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" id="password" name="password" placeholder=" " required>
+                    <label for="password">Senha</label>
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Entrar</button>
+            </form>
+
+            <div class="links">
+                <p>Não tem uma conta?</p>
+                <a href="register.html">Crie uma conta</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('loginForm');
+            const toast = document.getElementById('toast');
+
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const login = document.getElementById('login').value;
+                const password = document.getElementById('password').value;
+
+                // Reset errors
+                document.getElementById('loginError').style.display = 'none';
+                document.getElementById('passwordError').style.display = 'none';
+
+                try {
+                    // Primeiro passo: obter o callback code
+                    const response = await fetch('/api/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            login,
+                            password
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Erro ao fazer login');
+                    }
+
+                    // Segundo passo: obter o token JWT usando o callback code
+                    const callbackResponse = await fetch('/api/callback', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            login,
+                            password,
+                            callback_code: data.callback_code
+                        })
+                    });
+
+                    const callbackData = await callbackResponse.json();
+
+                    if (!callbackResponse.ok) {
+                        throw new Error(callbackData.error || 'Erro ao completar login');
+                    }
+
+                    // Redireciona para o dashboard após login bem-sucedido
+                    window.location.href = '/dashboard.html';
+
+                } catch (error) {
+                    showToast(error.message, 'error');
+
+                    // Mostra erros específicos nos campos
+                    if (error.message.includes('Credenciais inválidas')) {
+                        document.getElementById('loginError').textContent = 'Usuário ou senha incorretos';
+                        document.getElementById('loginError').style.display = 'block';
+                        document.getElementById('passwordError').textContent = 'Usuário ou senha incorretos';
+                        document.getElementById('passwordError').style.display = 'block';
+                    } else if (error.message.includes('E-mail não verificado')) {
+                        document.getElementById('loginError').textContent = 'E-mail não verificado';
+                        document.getElementById('loginError').style.display = 'block';
+                    } else if (error.message.includes('Conta desativada')) {
+                        document.getElementById('loginError').textContent = 'Conta desativada';
+                        document.getElementById('loginError').style.display = 'block';
+                    }
+                }
+            });
+
+            function showToast(message, type) {
+                toast.textContent = message;
+                toast.className = 'toast ' + type;
+                toast.classList.add('show');
+
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html>

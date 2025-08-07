@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - HAAP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6e40c9;
+            --secondary: #00e0ff;
+            --dark: #121212;
+            --card: #1e1e1e;
+            --text: #ffffff;
+            --text-light: #e0e0e0;
+            --error: #ff4d4f;
+            --success: #52c41a;
+            --warning: #faad14;
+            --sidebar-width: 240px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark);
+            color: var(--text);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--card);
+            padding: 1.5rem;
+            position: fixed;
+            height: 100vh;
+            transition: transform 0.3s ease;
+            z-index: 100;
+        }
+
+        .logo {
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.25rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border-radius: 6px;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            gap: 0.75rem;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(110, 64, 201, 0.1);
+            color: var(--text);
+        }
+
+        .nav-link.active {
+            background-color: rgba(110, 64, 201, 0.2);
+            color: var(--primary);
+        }
+
+        .nav-link i {
+            width: 24px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .admin-section {
+            margin-bottom: 2rem;
+        }
+
+        .admin-card {
+            background-color: var(--card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            margin-bottom: 1.5rem;
+        }
+
+        .admin-card h2 {
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        th {
+            font-weight: 500;
+            color: var(--text-light);
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-admin {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .badge-active {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .badge-inactive {
+            background-color: var(--error);
+            color: white;
+        }
+
+        .badge-verified {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .badge-unverified {
+            background-color: var(--warning);
+            color: white;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #5d36b0;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(110, 64, 201, 0.1);
+        }
+
+        .btn-danger {
+            background-color: var(--error);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #e04345;
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #49a817;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .tab-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .tab-buttons {
+            display: flex;
+            border-bottom: 1px solid #333;
+            margin-bottom: 1rem;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-weight: 500;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 101;
+        }
+
+        .toast {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            padding: 1rem;
+            border-radius: 6px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.error {
+            background-color: var(--error);
+        }
+
+        .toast.success {
+            background-color: var(--success);
+        }
+
+        .toast.warning {
+            background-color: var(--warning);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+                padding-top: 4rem;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <div class="logo-icon">H</div>
+            <div class="logo-text">HAAP</div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link">
+                    <i>📊</i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="profile.html" class="nav-link">
+                    <i>👤</i>
+                    <span>Perfil</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="admin.html" class="nav-link active">
+                    <i>🛡️</i>
+                    <span>Administração</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="external-links.html" class="nav-link">
+                    <i>🔗</i>
+                    <span>Links Externos</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/login.html" class="nav-link" id="logoutBtn">
+                    <i>🚪</i>
+                    <span>Sair</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <div class="header">
+            <h1 class="page-title">Painel de Administração</h1>
+            <div class="user-menu">
+                <img src="" alt="Avatar" class="user-avatar" id="userAvatar">
+            </div>
+        </div>
+
+        <div class="tab-container">
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="users">Usuários</button>
+                <button class="tab-btn" data-tab="external-links">Links Externos</button>
+            </div>
+
+            <div class="tab-content active" id="users-tab">
+                <div class="admin-section">
+                    <div class="admin-card">
+                        <h2>Todos os Usuários</h2>
+                        <div class="table-responsive">
+                            <table id="usersTable">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nome</th>
+                                        <th>Usuário</th>
+                                        <th>E-mail</th>
+                                        <th>Status</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usersTableBody">
+                                    <!-- Usuários serão carregados aqui -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="external-links-tab">
+                <div class="admin-section">
+                    <div class="admin-card">
+                        <h2>Links Externos</h2>
+                        <div class="table-responsive">
+                            <table id="linksTable">
+                                <thead>
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Serviço</th>
+                                        <th>Criado por</th>
+                                        <th>URL de Callback</th>
+                                        <th>Status</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="linksTableBody">
+                                    <!-- Links serão carregados aqui -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de Edição de Usuário -->
+    <div class="modal" id="editUserModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background-color: var(--card); padding: 2rem; border-radius: 12px; width: 100%; max-width: 500px;">
+            <h2 style="margin-bottom: 1.5rem;">Editar Usuário</h2>
+
+            <form id="editUserForm">
+                <input type="hidden" id="editUserId">
+
+                <div class="form-group">
+                    <label for="editUsername">Nome de usuário</label>
+                    <input type="text" id="editUsername" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editEmail">E-mail</label>
+                    <input type="email" id="editEmail" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-check">
+                        <input type="checkbox" id="editIsAdmin" class="form-check-input">
+                        <label for="editIsAdmin">Administrador</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-check">
+                        <input type="checkbox" id="editIsActive" class="form-check-input">
+                        <label for="editIsActive">Ativo</label>
+                    </div>
+                </div>
+
+                <div class="actions" style="margin-top: 1.5rem;">
+                    <button type="button" class="btn btn-secondary" id="closeEditUserModalBtn">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('sidebar');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const toast = document.getElementById('toast');
+            const userAvatar = document.getElementById('userAvatar');
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const usersTableBody = document.getElementById('usersTableBody');
+            const linksTableBody = document.getElementById('linksTableBody');
+            const editUserModal = document.getElementById('editUserModal');
+            const editUserForm = document.getElementById('editUserForm');
+            const closeEditUserModalBtn = document.getElementById('closeEditUserModalBtn');
+
+            // Verifica se o usuário é admin
+            let isAdminUser = false;
+
+            // Toggle mobile menu
+            mobileMenuBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+            });
+
+            // Tab switching
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab');
+
+                    // Update active tab button
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    // Update active tab content
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+
+                    // Load data for the tab if needed
+                    if (tabId === 'users') {
+                        loadUsers();
+                    } else if (tabId === 'external-links') {
+                        loadExternalLinks();
+                    }
+                });
+            });
+
+            // Logout
+            logoutBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+
+                try {
+                    const response = await fetch('/api/logout', {
+                        method: 'POST',
+                        credentials: 'include'
+                    });
+
+                    if (response.ok) {
+                        window.location.href = '/login.html';
+                    } else {
+                        const data = await response.json();
+                        throw new Error(data.error || 'Erro ao fazer logout');
+                    }
+                } catch (error) {
+                    showToast(error.message, 'error');
+                }
+            });
+
+            // Load user profile data for avatar
+            async function loadProfileData() {
+                try {
+                    const response = await fetch('/api/profile', {
+                        credentials: 'include'
+                    });
+
+                    const user = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(user.error || 'Erro ao carregar perfil');
+                    }
+
+                    // Set avatar
+                    if (user.profile_picture) {
+                        userAvatar.src = user.profile_picture;
+                    } else {
+                        userAvatar.src = '/assets/default-profile.png';
+                    }
+
+                    // Check if user is admin
+                    isAdminUser = user.is_admin;
+
+                    if (!isAdminUser) {
+                        showToast('Você não tem permissão para acessar esta página', 'error');
+                        setTimeout(() => {
+                            window.location.href = 'dashboard.html';
+                        }, 2000);
+                    }
+
+                } catch (error) {
+                    showToast(error.message, 'error');
+
+                    // If not authenticated, redirect to login
+                    if (error.message.includes('Não autenticado') ||
+                        error.message.includes('Token inválido')) {
+                        window.location.href = '/login.html';
+                    }
+                }
+            }
+
+            // Load all users
+            async function loadUsers() {
+                try {
+                    const response = await fetch('/api/admin/users', {
+                        credentials: 'include'
+                    });
+
+                    const users = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(users.error || 'Erro ao carregar usuários');
+                    }
+
+                    usersTableBody.innerHTML = '';
+
+                    users.forEach(user => {
+                        const row = document.createElement('tr');
+
+                        const statusBadge = user.is_active ?
+                            `<span class="badge badge-active">Ativo</span>` :
+                            `<span class="badge badge-inactive">Inativo</span>`;
+
+                        const adminBadge = user.is_admin ?
+                            `<span class="badge badge-admin">Admin</span>` : '';
+
+                        const verifiedBadge = user.is_verified ?
+                            `<span class="badge badge-verified">Verificado</span>` :
+                            `<span class="badge badge-unverified">Não verificado</span>`;
+
+                        row.innerHTML = `
+                            <td>${user.id}</td>
+                            <td>${user.display_name || user.username}</td>
+                            <td>${user.username}</td>
+                            <td>${user.email}</td>
+                            <td>
+                                ${statusBadge}
+                                ${adminBadge}
+                                ${verifiedBadge}
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-secondary edit-user-btn" data-id="${user.id}">Editar</button>
+                                    ${user.is_active ?
+                                        `<button class="btn btn-sm btn-danger deactivate-user-btn" data-id="${user.id}">Desativar</button>` :
+                                        `<button class="btn btn-sm btn-success activate-user-btn" data-id="${user.id}">Ativar</button>`}
+                                </div>
+                            </td>
+                        `;
+
+                        usersTableBody.appendChild(row);
+                    });
+
+                    // Add event listeners to edit buttons
+                    document.querySelectorAll('.edit-user-btn').forEach(btn => {
+                        btn.addEventListener('click', () => openEditUserModal(btn.getAttribute('data-id')));
+                    });
+
+                    // Add event listeners to deactivate buttons
+                    document.querySelectorAll('.deactivate-user-btn').forEach(btn => {
+                        btn.addEventListener('click', () => toggleUserStatus(btn.getAttribute('data-id'), false));
+                    });
+
+                    // Add event listeners to activate buttons
+                    document.querySelectorAll('.activate-user-btn').forEach(btn => {
+                        btn.addEventListener('click', () => toggleUserStatus(btn.getAttribute('data-id'), true));
+                    });
+
+                } catch (error) {
+                    showToast(error.message, 'error');
+                }
+            }
+
+            // Load all external links
+            async function loadExternalLinks() {
+                try {
+                    const response = await fetch('/api/admin/external-links', {
+                        credentials: 'include'
+                    });
+
+                    const links = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(links.error || 'Erro ao carregar links externos');
+                    }
+
+                    linksTableBody.innerHTML = '';
+
+                    links.forEach(link => {
+                        const row = document.createElement('tr');
+
+                        const activeBadge = link.is_active ?
+                            `<span class="badge badge-active">Ativo</span>` :
+                            `<span class="badge badge-inactive">Inativo</span>`;
+
+                        row.innerHTML = `
+                            <td>${link.link_code}</td>
+                            <td>${link.service_name}</td>
+                            <td>${link.display_name || link.username}</td>
+                            <td>${link.callback_url}</td>
+                            <td>${activeBadge}</td>
+                            <td>
+                                <div class="btn-group">
+                                    ${link.is_active ?
+                                        `<button class="btn btn-sm btn-danger deactivate-link-btn" data-id="${link.id}">Desativar</button>` :
+                                        `<button class="btn btn-sm btn-success activate-link-btn" data-id="${link.id}">Ativar</button>`}
+                                </div>
+                            </td>
+                        `;
+
+                        linksTableBody.appendChild(row);
+                    });
+
+                    // Add event listeners to deactivate buttons
+                    document.querySelectorAll('.deactivate-link-btn').forEach(btn => {
+                        btn.addEventListener('click', () => toggleLinkStatus(btn.getAttribute('data-id'), false));
+                    });
+
+                    // Add event listeners to activate buttons
+                    document.querySelectorAll('.activate-link-btn').forEach(btn => {
+                        btn.addEventListener('click', () => toggleLinkStatus(btn.getAttribute('data-id'), true));
+                    });
+
+                } catch (error) {
+                    showToast(error.message, 'error');
+                }
+            }
+
+            // Open edit user modal
+            async function openEditUserModal(userId) {
+                try {
+                    const response = await fetch(`/api/admin/users/${userId}`, {
+                        credentials: 'include'
+                    });
+
+                    const user = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(user.error || 'Erro ao carregar usuário');
+                    }
+
+                    document.getElementById('editUserId').value = user.id;
+                    document.getElementById('editUsername').value = user.username;
+                    document.getElementById('editEmail').value = user.email;
+                    document.getElementById('editIsAdmin').checked = user.is_admin;
+                    document.getElementById('editIsActive').checked = user.is_active;
+
+                    editUserModal.style.display = 'flex';
+
+                } catch (error) {
+                    showToast(error.message, 'error');
+                }
+            }
+
+            // Close edit user modal
+            closeEditUserModalBtn.addEventListener('click', () => {
+                editUserModal.style.display = 'none';
+                editUserForm.reset();
+            });
+
+            // Save user changes
+            editUserForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const userId = document.getElementById('editUserId').value;
+                const isAdmin = document.getElementById('editIsAdmin').checked;
+                const isActive = document.getElementById('editIsActive').checked;
+
+                try {
+                    const response = await fetch(`/api/admin/users/${userId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            is_admin: isAdmin,
+                            is_active: isActive
+                        }),
+                        credentials: 'include'
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Erro ao atualizar usuário');
+                    }
+
+                    showToast('Usuário atualizado com sucesso!', 'success');
+                    editUserModal.style.display = 'none';
+                    loadUsers();
+
+                } catch (error) {
+                    showToast(error.message, 'error');
+                }
+            });
+
+            // Toggle user status (activate/deactivate)
+            async function toggleUserStatus(userId, activate) {
+                if (confirm(`Tem certeza que deseja ${activate ? 'ativar' : 'desativar'} este usuário?`)) {
+                    try {
+                        const response = await fetch(`/api/admin/users/${userId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                is_admin: false, // Keep current admin status
+                                is_active: activate
+                            }),
+                            credentials: 'include'
+                        });
+
+                        const data = await response.json();
+
+                        if (!response.ok) {
+                            throw new Error(data.error || `Erro ao ${activate ? 'ativar' : 'desativar'} usuário`);
+                        }
+
+                        showToast(`Usuário ${activate ? 'ativado' : 'desativado'} com sucesso!`, 'success');
+                        loadUsers();
+
+                    } catch (error) {
+                        showToast(error.message, 'error');
+                    }
+                }
+            }
+
+            // Toggle link status (activate/deactivate)
+            async function toggleLinkStatus(linkId, activate) {
+                if (confirm(`Tem certeza que deseja ${activate ? 'ativar' : 'desativar'} este link?`)) {
+                    try {
+                        const response = await fetch(`/api/external-links/${linkId}/status`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                is_active: activate
+                            }),
+                            credentials: 'include'
+                        });
+
+                        const data = await response.json();
+
+                        if (!response.ok) {
+                            throw new Error(data.error || `Erro ao ${activate ? 'ativar' : 'desativar'} link`);
+                        }
+
+                        showToast(`Link ${activate ? 'ativado' : 'desativado'} com sucesso!`, 'success');
+                        loadExternalLinks();
+
+                    } catch (error) {
+                        showToast(error.message, 'error');
+                    }
+                }
+            }
+
+            function showToast(message, type) {
+                toast.textContent = message;
+                toast.className = 'toast ' + type;
+                toast.classList.add('show');
+
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 5000);
+            }
+
+            // Initial load
+            loadProfileData();
+            loadUsers();
+        });
+    </script>
+</body>
+</html>
