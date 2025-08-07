@@ -12,11 +12,11 @@ lugin
 Olá! Bem vindo(a) ao HAAP, antes de começar, apesar de receber o nome de Hsyst Auth, ele é um sistema de login totalmente refeito do zero, o que junto com isso, traz novos recursos e formas de funcionamento, e portanto, trate isso como uma atualização do Hsyst Auth, mas sem ligação nenhuma com a versão anterior.
 
 # Tutorial de Uso
-Quer utilizar, mas não quer ler uma documentação técnica inteira? [Clique Aqui!](#)
+Quer utilizar, mas não quer ler uma documentação técnica inteira? [Clique Aqui!](https://github.com/Hsyst/haap/blob/main/tutorial-de-uso.md)
 
 # Documentação Técnica
 ## Introdução
-A documentação técnica é um documento que descreve a função do código em linguagem técnica, e portanto, esta parte é dedicada a pessoas que querem entender como o sistema funciona de forma técnica, então, caso você não entenda de tecnologia, eu recomendo que se mantenha apenas no [Tutorial de Uso](#) que eu tenho certeza que vai te dar o material o suficiente para executar e configurar o sistema, e com uma linguagem amigável.
+A documentação técnica é um documento que descreve a função do código em linguagem técnica, e portanto, esta parte é dedicada a pessoas que querem entender como o sistema funciona de forma técnica, então, caso você não entenda de tecnologia, eu recomendo que se mantenha apenas no [Tutorial de Uso](https://github.com/Hsyst/haap/blob/main/tutorial-de-uso.md) que eu tenho certeza que vai te dar o material o suficiente para executar e configurar o sistema, e com uma linguagem amigável.
 
 ## Funcionalidades
 Este código, vem com um sistema de login *interno* e *externo*, apesar de lidarem com os mesmos dados, eles tratam e são usados para finalidades diferentes.
