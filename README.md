@@ -1,5 +1,12 @@
 # HAAP
-## Hsyst Auth Authorization Plugin
+## H
+syst
+### A
+uth
+### A
+uthorization
+### P
+lugin
 
 # Introdução
 Olá! Bem vindo(a) ao HAAP, antes de começar, apesar de receber o nome de Hsyst Auth, ele é um sistema de login totalmente refeito do zero, o que junto com isso, traz novos recursos e formas de funcionamento, e portanto, trate isso como uma atualização do Hsyst Auth, mas sem ligação nenhuma com a versão anterior.
