@@ -40,15 +40,15 @@ let config = {
         enabled: false,
         service: "smtp",
         smtp: {
-            host: "mail.hsyst.xyz",
+            host: "smtp.server.com",
             port: 587,
             secure: false,
             auth: {
-                user: "noreply@hsyst.xyz",
-                pass: "NoReply@#123"
+                user: "email@provider.com",
+                pass: "passwordhere"
             }
         },
-        from: "noreply@hsyst.xyz"
+        from: "email@provider.com"
     },
     paths: {
         public: "./public",
