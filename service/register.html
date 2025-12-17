@@ -1,261 +1,114 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro - HAAP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #6e40c9;
-            --secondary: #00e0ff;
-            --dark: #121212;
-            --card: #1e1e1e;
-            --text: #ffffff;
-            --text-light: #e0e0e0;
-            --error: #ff4d4f;
-            --success: #52c41a;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--dark);
-            color: var(--text);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 1rem;
         }
-        
-        .register-container {
-            width: 100%;
-            max-width: 400px;
-        }
-        
-        .card {
-            background-color: var(--card);
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-        
-        .logo {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .logo h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        .logo p {
-            color: var(--text-light);
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-        
-        .form-group label {
-            position: absolute;
-            top: 0.75rem;
-            left: 1rem;
-            color: var(--text-light);
-            transition: all 0.2s ease;
-            pointer-events: none;
-            background-color: var(--card);
-            padding: 0 0.25rem;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #333;
-            border-radius: 6px;
-            background-color: var(--dark);
-            color: var(--text);
-            font-size: 1rem;
-            transition: all 0.2s ease;
-        }
-        
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-        
-        .form-group input:focus + label,
-        .form-group input:not(:placeholder-shown) + label {
-            top: -0.5rem;
-            left: 0.75rem;
-            font-size: 0.75rem;
-            color: var(--primary);
-        }
-        
-        .btn {
-            width: 100%;
-            padding: 0.75rem;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background-color: #5d36b0;
-        }
-        
-        .links {
-            margin-top: 1.5rem;
-            text-align: center;
-            font-size: 0.9rem;
-        }
-        
-        .links a {
-            color: var(--secondary);
-            text-decoration: none;
-        }
-        
-        .links a:hover {
-            text-decoration: underline;
-        }
-        
-        .error-message {
-            color: var(--error);
-            font-size: 0.85rem;
-            margin-top: 0.25rem;
-            display: none;
-        }
-        
-        .toast {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            padding: 1rem;
-            border-radius: 6px;
-            color: white;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transform: translateY(-100px);
-            opacity: 0;
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-        
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-        
-        .toast.error {
-            background-color: var(--error);
-        }
-        
-        .toast.success {
-            background-color: var(--success);
-        }
-        
-        .password-strength {
-            margin-top: 0.5rem;
-            height: 4px;
-            background-color: #333;
-            border-radius: 2px;
-            overflow: hidden;
-        }
-        
-        .strength-bar {
-            height: 100%;
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-        
-        .strength-weak {
-            background-color: #ff4d4f;
-        }
-        
-        .strength-medium {
-            background-color: #faad14;
-        }
-        
-        .strength-strong {
-            background-color: #52c41a;
-        }
-        
-        .strength-text {
-            font-size: 0.75rem;
-            color: var(--text-light);
-            margin-top: 0.25rem;
-        }
-        
-        @media (max-width: 480px) {
-            .card {
-                padding: 1.5rem;
-            }
+
+        .glass {
+            background: rgba(30, 30, 30, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
-<body>
-    <div class="register-container">
-        <div class="card">
-            <div class="logo">
-                <h1>HAAP</h1>
-                <p>Crie sua conta</p>
+
+<body class="bg-[#0a0a0a] text-white min-h-screen flex items-center justify-center p-4 selection:bg-indigo-500/30">
+    <div class="w-full max-w-md">
+        <div class="glass rounded-2xl p-8 shadow-2xl space-y-8">
+            <div class="text-center space-y-2">
+                <h1
+                    class="text-4xl font-bold bg-gradient-to-r from-indigo-500 to-cyan-400 bg-clip-text text-transparent">
+                    HAAP</h1>
+                <p class="text-gray-400 text-sm font-medium">Crie sua conta no HAAP</p>
             </div>
-            
-            <form id="registerForm">
-                <div class="form-group">
-                    <input type="text" id="username" name="username" placeholder=" " required>
-                    <label for="username">Nome de usuário</label>
-                    <div class="error-message" id="usernameError"></div>
-                </div>
-                
-                <div class="form-group">
-                    <input type="email" id="email" name="email" placeholder=" " required>
-                    <label for="email">E-mail</label>
-                    <div class="error-message" id="emailError"></div>
-                </div>
-                
-                <div class="form-group">
-                    <input type="password" id="password" name="password" placeholder=" " required>
-                    <label for="password">Senha</label>
-                    <div class="password-strength">
-                        <div class="strength-bar" id="strengthBar"></div>
+
+            <form id="registerForm" class="space-y-5">
+                <div class="space-y-2">
+                    <label for="username" class="text-sm font-medium text-gray-300 ml-1">Nome de usuário</label>
+                    <div class="relative group">
+                        <div
+                            class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 group-focus-within:text-indigo-500 transition-colors">
+                            <i class="fas fa-user-tag"></i>
+                        </div>
+                        <input type="text" id="username" name="username" required
+                            class="block w-full pl-10 pr-3 py-3 bg-black/40 border border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all placeholder-gray-600"
+                            placeholder="Como quer ser chamado?">
                     </div>
-                    <div class="strength-text" id="strengthText"></div>
-                    <div class="error-message" id="passwordError"></div>
+                    <div class="text-red-500 text-xs mt-1 hidden" id="usernameError"></div>
                 </div>
-                
-                <button type="submit" class="btn btn-primary">Criar conta</button>
+
+                <div class="space-y-2">
+                    <label for="email" class="text-sm font-medium text-gray-300 ml-1">E-mail</label>
+                    <div class="relative group">
+                        <div
+                            class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 group-focus-within:text-indigo-500 transition-colors">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <input type="email" id="email" name="email" required
+                            class="block w-full pl-10 pr-3 py-3 bg-black/40 border border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all placeholder-gray-600"
+                            placeholder="seu@email.com">
+                    </div>
+                    <div class="text-red-500 text-xs mt-1 hidden" id="emailError"></div>
+                </div>
+
+                <div class="space-y-2">
+                    <label for="password" class="text-sm font-medium text-gray-300 ml-1">Senha</label>
+                    <div class="relative group">
+                        <div
+                            class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 group-focus-within:text-indigo-500 transition-colors">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <input type="password" id="password" name="password" required
+                            class="block w-full pl-10 pr-3 py-3 bg-black/40 border border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all placeholder-gray-600"
+                            placeholder="••••••••">
+                    </div>
+
+                    <div class="px-1 space-y-1.5">
+                        <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                            <div id="strengthBar" class="h-full w-0 transition-all duration-300"></div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span id="strengthText"
+                                class="text-[10px] uppercase tracking-wider font-bold text-gray-500">Força da
+                                senha</span>
+                        </div>
+                    </div>
+                    <div class="text-red-500 text-xs mt-1 hidden" id="passwordError"></div>
+                </div>
+
+                <button type="submit"
+                    class="w-full py-3 px-4 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/20 transform active:scale-[0.98] transition-all duration-200 mt-2">
+                    Criar conta
+                </button>
             </form>
-            
-            <div class="links">
-                Já tem uma conta? <a href="login.html">Faça login</a>
+
+            <div class="text-center">
+                <p class="text-gray-400 text-sm">
+                    Já tem uma conta?
+                    <a href="login.html"
+                        class="text-indigo-400 hover:text-indigo-300 font-medium transition-colors">Faça login</a>
+                </p>
             </div>
         </div>
     </div>
-    
-    <div class="toast" id="toast"></div>
-    
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-4 right-4 transform translate-x-full opacity-0 transition-all duration-300 z-50">
+        <div class="glass px-6 py-3 rounded-xl shadow-xl flex items-center space-x-3">
+            <div id="toastIcon" class="text-lg"></div>
+            <p id="toastMessage" class="text-sm font-medium"></p>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const registerForm = document.getElementById('registerForm');
@@ -263,119 +116,117 @@
             const strengthBar = document.getElementById('strengthBar');
             const strengthText = document.getElementById('strengthText');
             const toast = document.getElementById('toast');
-            
-            // Validação de força da senha
+            const toastMessage = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+
             passwordInput.addEventListener('input', () => {
                 const password = passwordInput.value;
                 let strength = 0;
-                let text = '';
-                
+                let text = 'Fraca';
+                let color = 'bg-red-500';
+                let width = '33%';
+
                 if (password.length > 0) strength += 1;
                 if (password.length >= 8) strength += 1;
                 if (/[A-Z]/.test(password)) strength += 1;
                 if (/[0-9]/.test(password)) strength += 1;
                 if (/[^A-Za-z0-9]/.test(password)) strength += 1;
-                
-                switch(strength) {
-                    case 0:
-                        text = '';
-                        break;
-                    case 1:
-                    case 2:
-                        text = 'Fraca';
-                        strengthBar.className = 'strength-bar strength-weak';
-                        strengthBar.style.width = '33%';
-                        break;
-                    case 3:
-                        text = 'Média';
-                        strengthBar.className = 'strength-bar strength-medium';
-                        strengthBar.style.width = '66%';
-                        break;
-                    case 4:
-                    case 5:
-                        text = 'Forte';
-                        strengthBar.className = 'strength-bar strength-strong';
-                        strengthBar.style.width = '100%';
-                        break;
+
+                if (strength <= 2) {
+                    text = 'Fraca';
+                    color = 'bg-red-500';
+                    width = '33%';
+                } else if (strength === 3) {
+                    text = 'Média';
+                    color = 'bg-yellow-500';
+                    width = '66%';
+                } else {
+                    text = 'Forte';
+                    color = 'bg-green-500';
+                    width = '100%';
                 }
-                
-                strengthText.textContent = text;
+
+                if (password.length === 0) {
+                    strengthBar.style.width = '0%';
+                    strengthText.textContent = 'Força da senha';
+                    strengthText.className = 'text-[10px] uppercase tracking-wider font-bold text-gray-500';
+                } else {
+                    strengthBar.style.width = width;
+                    strengthBar.className = `h-full transition-all duration-300 ${color}`;
+                    strengthText.textContent = text;
+                    strengthText.className = `text-[10px] uppercase tracking-wider font-bold ${color.replace('bg-', 'text-')}`;
+                }
             });
-            
+
             registerForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                
+
                 const username = document.getElementById('username').value;
                 const email = document.getElementById('email').value;
                 const password = document.getElementById('password').value;
-                
-                // Reset errors
-                document.getElementById('usernameError').style.display = 'none';
-                document.getElementById('emailError').style.display = 'none';
-                document.getElementById('passwordError').style.display = 'none';
-                
+
+                document.getElementById('usernameError').classList.add('hidden');
+                document.getElementById('emailError').classList.add('hidden');
+                document.getElementById('passwordError').classList.add('hidden');
+
                 try {
                     const response = await fetch('/api/register', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            username,
-                            email,
-                            password
-                        })
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, email, password })
                     });
-                    
+
                     const data = await response.json();
-                    
+
                     if (!response.ok) {
                         throw new Error(data.error || 'Erro ao criar conta');
                     }
-                    
+
                     if (data.account_created) {
                         showToast('Conta criada com sucesso!', 'success');
-                        
-                        // Se não requer verificação de e-mail, redireciona para login
+
                         if (!data.message || !data.message.includes('Verifique seu e-mail')) {
                             setTimeout(() => {
                                 window.location.href = 'login.html';
                             }, 2000);
                         }
                     }
-                    
+
                 } catch (error) {
                     showToast(error.message, 'error');
-                    
-                    // Mostra erros específicos nos campos
+
                     if (error.message.includes('E-mail ou nome de usuário já cadastrado')) {
                         document.getElementById('usernameError').textContent = 'Nome de usuário já em uso';
-                        document.getElementById('usernameError').style.display = 'block';
+                        document.getElementById('usernameError').classList.remove('hidden');
                         document.getElementById('emailError').textContent = 'E-mail já em uso';
-                        document.getElementById('emailError').style.display = 'block';
+                        document.getElementById('emailError').classList.remove('hidden');
                     } else if (error.message.includes('nome de usuário')) {
                         document.getElementById('usernameError').textContent = error.message;
-                        document.getElementById('usernameError').style.display = 'block';
+                        document.getElementById('usernameError').classList.remove('hidden');
                     } else if (error.message.includes('E-mail')) {
                         document.getElementById('emailError').textContent = error.message;
-                        document.getElementById('emailError').style.display = 'block';
+                        document.getElementById('emailError').classList.remove('hidden');
                     } else if (error.message.includes('Senha')) {
                         document.getElementById('passwordError').textContent = error.message;
-                        document.getElementById('passwordError').style.display = 'block';
+                        document.getElementById('passwordError').classList.remove('hidden');
                     }
                 }
             });
-            
+
             function showToast(message, type) {
-                toast.textContent = message;
-                toast.className = 'toast ' + type;
-                toast.classList.add('show');
-                
+                toastMessage.textContent = message;
+                if (type === 'success') {
+                    toastIcon.innerHTML = '<i class="fas fa-check-circle text-green-500"></i>';
+                } else {
+                    toastIcon.innerHTML = '<i class="fas fa-exclamation-circle text-red-500"></i>';
+                }
+                toast.classList.remove('translate-x-full', 'opacity-0');
                 setTimeout(() => {
-                    toast.classList.remove('show');
+                    toast.classList.add('translate-x-full', 'opacity-0');
                 }, 5000);
             }
         });
     </script>
 </body>
+
 </html>

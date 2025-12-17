@@ -1,216 +1,76 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Autorizar Login - HAAP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #6e40c9;
-            --secondary: #00e0ff;
-            --dark: #121212;
-            --card: #1e1e1e;
-            --text: #ffffff;
-            --text-light: #e0e0e0;
-            --error: #ff4d4f;
-            --success: #52c41a;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--dark);
-            color: var(--text);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 1rem;
         }
 
-        .auth-container {
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .card {
-            background-color: var(--card);
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-
-        .logo {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .logo h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .service-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid #333;
-        }
-
-        .service-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 8px;
-            background-color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
-        .service-details h2 {
-            font-size: 1.25rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .service-details p {
-            color: var(--text-light);
-            font-size: 0.9rem;
-        }
-
-        .permissions {
-            margin-bottom: 2rem;
-        }
-
-        .permissions h3 {
-            font-size: 1rem;
-            margin-bottom: 1rem;
-            color: var(--text-light);
-        }
-
-        .permission-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .permission-item i {
-            color: var(--primary);
-        }
-
-        .auth-actions {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .btn {
-            flex: 1;
-            padding: 0.75rem;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #5d36b0;
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            border: 1px solid #333;
-            color: var(--text);
-        }
-
-        .btn-secondary:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            margin-top: 1rem;
-        }
-
-        .spinner {
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            border-top: 3px solid var(--primary);
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @media (max-width: 480px) {
-            .card {
-                padding: 1.5rem;
-            }
-
-            .auth-actions {
-                flex-direction: column;
-            }
+        .glass {
+            background: rgba(30, 30, 30, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
-<body>
-    <div class="auth-container">
-        <div class="card">
-            <div class="logo">
-                <h1>HAAP</h1>
+
+<body class="bg-[#0a0a0a] text-white min-h-screen flex items-center justify-center p-4 selection:bg-indigo-500/30">
+    <div class="w-full max-w-lg">
+        <div class="glass rounded-2xl p-8 shadow-2xl space-y-8">
+            <div class="text-center space-y-2">
+                <h1
+                    class="text-4xl font-bold bg-gradient-to-r from-indigo-500 to-cyan-400 bg-clip-text text-transparent">
+                    HAAP</h1>
+                <p class="text-gray-400 text-sm font-medium uppercase tracking-widest">Autorização de Acesso</p>
             </div>
 
-            <div class="service-info" id="serviceInfo">
-                <div class="service-icon" id="serviceIcon">?</div>
-                <div class="service-details">
-                    <h2 id="serviceName">Carregando serviço...</h2>
-                    <p id="serviceCreator">Verificando informações</p>
+            <div class="flex items-center space-x-4 p-4 bg-white/5 rounded-2xl border border-white/10" id="serviceInfo">
+                <div class="w-16 h-16 bg-gradient-to-br from-indigo-600 to-indigo-400 rounded-xl flex items-center justify-center text-2xl font-bold shadow-lg shadow-indigo-500/20"
+                    id="serviceIcon">
+                    <i class="fas fa-question"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 class="text-xl font-bold text-white" id="serviceName">Carregando serviço...</h2>
+                    <p class="text-gray-400 text-sm" id="serviceCreator">Verificando informações</p>
                 </div>
             </div>
 
-            <div class="permissions">
-                <h3>Este serviço solicita acesso a:</h3>
-                <div id="permissionsList">
-                    <div class="permission-item">
-                        <i>⏳</i>
-                        <span>Carregando permissões...</span>
+            <div class="space-y-4">
+                <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider ml-1">Este serviço solicita
+                    acesso a:</h3>
+                <div class="grid grid-cols-1 gap-3" id="permissionsList">
+                    <div
+                        class="flex items-center space-x-3 p-3 bg-white/5 rounded-xl border border-white/5 animate-pulse">
+                        <div class="w-5 h-5 bg-white/10 rounded-full"></div>
+                        <div class="h-4 bg-white/10 rounded w-1/2"></div>
                     </div>
                 </div>
             </div>
 
-            <div class="auth-actions">
-                <button class="btn btn-secondary" id="denyBtn" onclick="window.location.href='/dashboard.html'">Negar</button>
-                <button class="btn btn-primary" id="approveBtn">Autorizar</button>
+            <div class="flex flex-col sm:flex-row gap-3 pt-4">
+                <button
+                    class="flex-1 py-3 px-4 bg-white/5 hover:bg-white/10 text-white font-semibold rounded-xl border border-white/10 transition-all active:scale-[0.98]"
+                    id="denyBtn">
+                    Negar Acesso
+                </button>
+                <button
+                    class="flex-1 py-3 px-4 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/20 transform active:scale-[0.98] transition-all"
+                    id="approveBtn">
+                    Autorizar
+                </button>
             </div>
 
-            <div class="loading" id="loading">
-                <div class="spinner"></div>
-                <p>Processando autorização...</p>
+            <div class="hidden text-center space-y-3" id="loading">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500">
+                </div>
+                <p class="text-gray-400 text-sm">Processando autorização...</p>
             </div>
         </div>
     </div>
@@ -225,7 +85,6 @@
             const approveBtn = document.getElementById('approveBtn');
             const loading = document.getElementById('loading');
 
-            // Get link code from URL hash
             const linkCode = window.location.hash.substring(1).split('=')[1];
 
             if (!linkCode) {
@@ -233,7 +92,6 @@
                 return;
             }
 
-            // Fetch link info
             try {
                 const response = await fetch(`/api/external-links/${linkCode}`);
                 const link = await response.json();
@@ -242,48 +100,48 @@
                     throw new Error(link.error || 'Erro ao carregar informações do link');
                 }
 
-                // Render service info
-                serviceIcon.textContent = link.service_name.charAt(0).toUpperCase();
+                serviceIcon.innerHTML = `<span class="text-white">${link.service_name.charAt(0).toUpperCase()}</span>`;
                 serviceName.textContent = link.service_name;
                 serviceCreator.textContent = `Criado por ${link.display_name || link.username}`;
 
-                // Render permissions
                 permissionsList.innerHTML = '';
                 const provides = link.provides;
 
                 provides.forEach(permission => {
                     const item = document.createElement('div');
-                    item.className = 'permission-item';
+                    item.className = 'flex items-center space-x-3 p-3 bg-white/5 rounded-xl border border-white/5 hover:bg-white/10 transition-colors';
 
-                    let icon = '🔍';
+                    let icon = 'fa-search';
                     let text = '';
 
-                    switch(permission) {
+                    switch (permission) {
                         case 'id':
-                            icon = '🆔';
-                            text = 'Seu ID de usuário';
+                            icon = 'fa-id-card';
+                            text = 'Seu ID de usuário único';
                             break;
                         case 'username':
-                            icon = '👤';
+                            icon = 'fa-user';
                             text = 'Seu nome de usuário';
                             break;
                         case 'email':
-                            icon = '✉️';
+                            icon = 'fa-envelope';
                             text = 'Seu endereço de e-mail';
                             break;
                         case 'display_name':
-                            icon = '🏷️';
-                            text = 'Seu nome de exibição';
+                            icon = 'fa-tag';
+                            text = 'Seu nome de exibição público';
                             break;
                         case 'profile_picture':
-                            icon = '🖼️';
+                            icon = 'fa-image';
                             text = 'Sua foto de perfil';
                             break;
                     }
 
                     item.innerHTML = `
-                        <i>${icon}</i>
-                        <span>${text}</span>
+                        <div class="w-8 h-8 flex items-center justify-center text-indigo-400">
+                            <i class="fas ${icon}"></i>
+                        </div>
+                        <span class="text-gray-200 text-sm font-medium">${text}</span>
                     `;
 
                     permissionsList.appendChild(item);
@@ -293,84 +151,61 @@
                 renderError(error.message);
             }
 
-            // Handle deny button
             denyBtn.addEventListener('click', async () => {
                 try {
                     const response = await fetch(`/api/external-links/${linkCode}/authorize`, {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            authorize: false
-                        }),
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ authorize: false }),
                         credentials: 'include'
                     });
 
                     const data = await response.json();
-
-                    if (!response.ok) {
-                        throw new Error(data.error || 'Erro ao processar negação');
-                    }
-
-                    // Redirect to service homepage
+                    if (!response.ok) throw new Error(data.error || 'Erro ao processar negação');
                     window.location.href = data.redirect_to;
-
                 } catch (error) {
                     renderError(error.message);
                 }
             });
 
-            // Handle approve button
             approveBtn.addEventListener('click', async () => {
-                loading.style.display = 'block';
-                approveBtn.disabled = true;
-                denyBtn.disabled = true;
+                loading.classList.remove('hidden');
+                approveBtn.classList.add('hidden');
+                denyBtn.classList.add('hidden');
 
                 try {
                     const response = await fetch(`/api/external-links/${linkCode}/authorize`, {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            authorize: true
-                        }),
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ authorize: true }),
                         credentials: 'include'
                     });
 
                     const data = await response.json();
-
-                    if (!response.ok) {
-                        throw new Error(data.error || 'Erro ao processar autorização');
-                    }
-
-                    // Redirect to callback URL
+                    if (!response.ok) throw new Error(data.error || 'Erro ao processar autorização');
                     window.location.href = data.redirect_to;
-
                 } catch (error) {
-                    loading.style.display = 'none';
-                    approveBtn.disabled = false;
-                    denyBtn.disabled = false;
+                    loading.classList.add('hidden');
+                    approveBtn.classList.remove('hidden');
+                    denyBtn.classList.remove('hidden');
                     renderError(error.message);
                 }
             });
 
             function renderError(message) {
                 permissionsList.innerHTML = `
-                    <div class="permission-item" style="color: var(--error)">
-                        <i>❌</i>
-                        <span>${message}</span>
+                    <div class="flex items-center space-x-3 p-4 bg-red-500/10 rounded-xl border border-red-500/20 text-red-400">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span class="text-sm font-medium">${message}</span>
                     </div>
                 `;
 
-                approveBtn.style.display = 'none';
-                denyBtn.textContent = 'Voltar';
-                denyBtn.onclick = () => {
-                    window.location.href = '/login.html';
-                };
+                approveBtn.classList.add('hidden');
+                denyBtn.textContent = 'Voltar para o Login';
+                denyBtn.onclick = () => { window.location.href = '/login.html'; };
             }
         });
     </script>
 </body>
+
 </html>
