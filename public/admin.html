@@ -1,181 +1,484 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark">
-
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administração - HAAP</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Admin - HAAP</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #6e40c9;
+            --secondary: #00e0ff;
+            --dark: #121212;
+            --card: #1e1e1e;
+            --text: #ffffff;
+            --text-light: #e0e0e0;
+            --error: #ff4d4f;
+            --success: #52c41a;
+            --warning: #faad14;
+            --sidebar-width: 240px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
+            background-color: var(--dark);
+            color: var(--text);
+            display: flex;
+            min-height: 100vh;
         }
 
-        .glass {
-            background: rgba(30, 30, 30, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--card);
+            padding: 1.5rem;
+            position: fixed;
+            height: 100vh;
+            transition: transform 0.3s ease;
+            z-index: 100;
         }
 
-        .sidebar-link.active {
-            background: rgba(79, 70, 229, 0.1);
-            color: #818cf8;
-            border-right: 3px solid #6366f1;
+        .logo {
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.25rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border-radius: 6px;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            gap: 0.75rem;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(110, 64, 201, 0.1);
+            color: var(--text);
+        }
+
+        .nav-link.active {
+            background-color: rgba(110, 64, 201, 0.2);
+            color: var(--primary);
+        }
+
+        .nav-link i {
+            width: 24px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .admin-section {
+            margin-bottom: 2rem;
+        }
+
+        .admin-card {
+            background-color: var(--card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            margin-bottom: 1.5rem;
+        }
+
+        .admin-card h2 {
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        th {
+            font-weight: 500;
+            color: var(--text-light);
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-admin {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .badge-active {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .badge-inactive {
+            background-color: var(--error);
+            color: white;
+        }
+
+        .badge-verified {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .badge-unverified {
+            background-color: var(--warning);
+            color: white;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #5d36b0;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(110, 64, 201, 0.1);
+        }
+
+        .btn-danger {
+            background-color: var(--error);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #e04345;
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #49a817;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .tab-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .tab-buttons {
+            display: flex;
+            border-bottom: 1px solid #333;
+            margin-bottom: 1rem;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-weight: 500;
+            cursor: pointer;
+            position: relative;
         }
 
         .tab-btn.active {
-            color: #818cf8;
-            border-bottom: 2px solid #6366f1;
+            color: var(--primary);
         }
 
-        .modal-backdrop {
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(4px);
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
         }
 
-        .table-container {
-            scrollbar-width: thin;
-            scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 101;
+        }
+
+        .toast {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            padding: 1rem;
+            border-radius: 6px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.error {
+            background-color: var(--error);
+        }
+
+        .toast.success {
+            background-color: var(--success);
+        }
+
+        .toast.warning {
+            background-color: var(--warning);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+                padding-top: 4rem;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
         }
     </style>
 </head>
+<body>
+    <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
 
-<body class="bg-[#0a0a0a] text-white min-h-screen flex selection:bg-indigo-500/30">
-    <!-- Mobile Menu Button -->
-    <button id="mobileMenuBtn" class="lg:hidden fixed top-4 left-4 z-50 p-2 bg-indigo-600 rounded-lg shadow-lg">
-        <i class="fas fa-bars"></i>
-    </button>
-
-    <!-- Sidebar -->
-    <aside id="sidebar"
-        class="fixed inset-y-0 left-0 z-40 w-64 bg-[#111] border-r border-white/5 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
-        <div class="h-full flex flex-col">
-            <div class="p-6 text-center">
-                <h1
-                    class="text-2xl font-bold bg-gradient-to-r from-indigo-500 to-cyan-400 bg-clip-text text-transparent">
-                    HAAP</h1>
-            </div>
-
-            <nav class="flex-1 px-4 space-y-2 mt-4">
-                <a href="dashboard.html"
-                    class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-xl transition-all hover:bg-white/5 group text-gray-400">
-                    <i class="fas fa-chart-pie w-5 text-center group-hover:scale-110 transition-transform"></i>
-                    <span class="font-medium">Dashboard</span>
-                </a>
-                <a href="profile.html"
-                    class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-xl transition-all hover:bg-white/5 group text-gray-400">
-                    <i class="fas fa-user w-5 text-center group-hover:scale-110 transition-transform"></i>
-                    <span class="font-medium">Perfil</span>
-                </a>
-                <a href="admin.html"
-                    class="sidebar-link active flex items-center space-x-3 px-4 py-3 rounded-xl transition-all hover:bg-white/5 group">
-                    <i class="fas fa-shield-alt w-5 text-center group-hover:scale-110 transition-transform"></i>
-                    <span class="font-medium">Administração</span>
-                </a>
-                <a href="external-links.html"
-                    class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-xl transition-all hover:bg-white/5 group text-gray-400">
-                    <i class="fas fa-link w-5 text-center group-hover:scale-110 transition-transform"></i>
-                    <span class="font-medium">Links Externos</span>
-                </a>
-            </nav>
-
-            <div class="p-4 border-t border-white/5">
-                <a href="#" id="logoutBtn"
-                    class="flex items-center space-x-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-400/10 transition-all group">
-                    <i class="fas fa-sign-out-alt w-5 text-center group-hover:translate-x-1 transition-transform"></i>
-                    <span class="font-medium">Sair</span>
-                </a>
-            </div>
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <div class="logo-icon">H</div>
+            <div class="logo-text">HAAP</div>
         </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link">
+                    <i>📊</i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="profile.html" class="nav-link">
+                    <i>👤</i>
+                    <span>Perfil</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/html/index.html" class="nav-link" id="homeBtn">
+                    <i>🏠</i>
+                    <span>Retornar ao site</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="admin.html" class="nav-link active">
+                    <i>🛡️</i>
+                    <span>Administração</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="external-links.html" class="nav-link">
+                    <i>🔗</i>
+                    <span>Links Externos</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/login.html" class="nav-link" id="logoutBtn">
+                    <i>🚪</i>
+                    <span>Sair</span>
+                </a>
+            </li>
+        </ul>
     </aside>
 
-    <!-- Main Content -->
-    <main class="flex-1 lg:ml-64 p-4 lg:p-8">
-        <div class="max-w-7xl mx-auto space-y-8">
-            <!-- Header -->
-            <div class="flex items-center justify-between">
-                <div>
-                    <h2 class="text-3xl font-bold text-white">Painel de Administração</h2>
-                    <p class="text-gray-400">Gerencie usuários e integrações do sistema.</p>
-                </div>
-                <div class="hidden sm:block">
-                    <img src="" alt="Avatar" class="w-12 h-12 rounded-full border-2 border-indigo-500/30 object-cover"
-                        id="userAvatar">
-                </div>
+    <main class="main-content">
+        <div class="header">
+            <h1 class="page-title">Painel de Administração</h1>
+            <div class="user-menu">
+                <img src="" alt="Avatar" class="user-avatar" id="userAvatar">
+            </div>
+        </div>
+
+        <div class="tab-container">
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="users">Usuários</button>
+                <button class="tab-btn" data-tab="external-links">Links Externos</button>
             </div>
 
-            <!-- Tabs -->
-            <div class="space-y-6">
-                <div class="flex space-x-8 border-b border-white/5">
-                    <button class="tab-btn active px-4 py-3 font-medium transition-all" data-tab="users">
-                        <i class="fas fa-users mr-2"></i>Usuários
-                    </button>
-                    <button class="tab-btn px-4 py-3 font-medium transition-all text-gray-400 hover:text-white"
-                        data-tab="external-links">
-                        <i class="fas fa-link mr-2"></i>Links Externos
-                    </button>
-                </div>
-
-                <!-- Users Tab -->
-                <div id="users-tab" class="tab-content">
-                    <div class="glass rounded-3xl overflow-hidden">
-                        <div class="p-6 border-b border-white/5 flex items-center justify-between">
-                            <h3 class="text-xl font-bold">Todos os Usuários</h3>
-                            <div class="relative">
-                                <i
-                                    class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
-                                <input type="text" placeholder="Buscar usuários..."
-                                    class="pl-10 pr-4 py-2 bg-black/40 border border-white/10 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500/50 outline-none transition-all">
-                            </div>
-                        </div>
-                        <div class="overflow-x-auto table-container">
-                            <table class="w-full text-left">
-                                <thead class="bg-white/5 text-gray-400 text-xs uppercase tracking-wider">
+            <div class="tab-content active" id="users-tab">
+                <div class="admin-section">
+                    <div class="admin-card">
+                        <h2>Todos os Usuários</h2>
+                        <div class="table-responsive">
+                            <table id="usersTable">
+                                <thead>
                                     <tr>
-                                        <th class="px-6 py-4 font-semibold">ID</th>
-                                        <th class="px-6 py-4 font-semibold">Usuário</th>
-                                        <th class="px-6 py-4 font-semibold">E-mail</th>
-                                        <th class="px-6 py-4 font-semibold">Status</th>
-                                        <th class="px-6 py-4 font-semibold text-right">Ações</th>
+                                        <th>ID</th>
+                                        <th>Nome</th>
+                                        <th>Usuário</th>
+                                        <th>E-mail</th>
+                                        <th>Status</th>
+                                        <th>Ações</th>
                                     </tr>
                                 </thead>
-                                <tbody id="usersTableBody" class="divide-y divide-white/5">
-                                    <!-- Loading State -->
-                                    <tr class="animate-pulse">
-                                        <td colspan="5" class="px-6 py-8 text-center text-gray-500">Carregando
-                                            usuários...</td>
-                                    </tr>
+                                <tbody id="usersTableBody">
+                                    <!-- Usuários serão carregados aqui -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- External Links Tab -->
-                <div id="external-links-tab" class="tab-content hidden">
-                    <div class="glass rounded-3xl overflow-hidden">
-                        <div class="p-6 border-b border-white/5">
-                            <h3 class="text-xl font-bold">Links Externos do Sistema</h3>
-                        </div>
-                        <div class="overflow-x-auto table-container">
-                            <table class="w-full text-left">
-                                <thead class="bg-white/5 text-gray-400 text-xs uppercase tracking-wider">
+            <div class="tab-content" id="external-links-tab">
+                <div class="admin-section">
+                    <div class="admin-card">
+                        <h2>Links Externos</h2>
+                        <div class="table-responsive">
+                            <table id="linksTable">
+                                <thead>
                                     <tr>
-                                        <th class="px-6 py-4 font-semibold">Código</th>
-                                        <th class="px-6 py-4 font-semibold">Serviço</th>
-                                        <th class="px-6 py-4 font-semibold">Criador</th>
-                                        <th class="px-6 py-4 font-semibold">Status</th>
-                                        <th class="px-6 py-4 font-semibold text-right">Ações</th>
+                                        <th>Código</th>
+                                        <th>Serviço</th>
+                                        <th>Criado por</th>
+                                        <th>URL de Callback</th>
+                                        <th>Status</th>
+                                        <th>Ações</th>
                                     </tr>
                                 </thead>
-                                <tbody id="linksTableBody" class="divide-y divide-white/5">
-                                    <!-- Loading State -->
-                                    <tr class="animate-pulse">
-                                        <td colspan="5" class="px-6 py-8 text-center text-gray-500">Carregando links...
-                                        </td>
-                                    </tr>
+                                <tbody id="linksTableBody">
+                                    <!-- Links serão carregados aqui -->
                                 </tbody>
                             </table>
                         </div>
@@ -185,90 +488,54 @@
         </div>
     </main>
 
-    <!-- Edit User Modal -->
-    <div id="editUserModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop">
-        <div
-            class="glass w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
-            <div class="p-6 border-b border-white/5 flex items-center justify-between">
-                <h3 class="text-xl font-bold">Editar Usuário</h3>
-                <button id="closeEditUserModalBtn" class="text-gray-400 hover:text-white transition-colors">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
-            <form id="editUserForm" class="p-6 space-y-6">
+    <!-- Modal de Edição de Usuário -->
+    <div class="modal" id="editUserModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background-color: var(--card); padding: 2rem; border-radius: 12px; width: 100%; max-width: 500px;">
+            <h2 style="margin-bottom: 1.5rem;">Editar Usuário</h2>
+
+            <form id="editUserForm">
                 <input type="hidden" id="editUserId">
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="space-y-2">
-                        <label class="text-sm font-medium text-gray-300 ml-1">Username</label>
-                        <input type="text" id="editUsername" readonly
-                            class="block w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-gray-500 cursor-not-allowed outline-none">
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-sm font-medium text-gray-300 ml-1">E-mail</label>
-                        <input type="email" id="editEmail" readonly
-                            class="block w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-gray-500 cursor-not-allowed outline-none">
+                <div class="form-group">
+                    <label for="editUsername">Nome de usuário</label>
+                    <input type="text" id="editUsername" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editEmail">E-mail</label>
+                    <input type="email" id="editEmail" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-check">
+                        <input type="checkbox" id="editIsAdmin" class="form-check-input">
+                        <label for="editIsAdmin">Administrador</label>
                     </div>
                 </div>
 
-                <div class="space-y-4">
-                    <label class="text-sm font-medium text-gray-300 ml-1">Permissões e Status</label>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <label
-                            class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5 cursor-pointer hover:bg-white/10 transition-all group">
-                            <div class="flex items-center space-x-3">
-                                <div
-                                    class="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform">
-                                    <i class="fas fa-user-shield"></i>
-                                </div>
-                                <span class="font-medium">Administrador</span>
-                            </div>
-                            <input type="checkbox" id="editIsAdmin"
-                                class="w-5 h-5 rounded border-white/10 text-indigo-600 focus:ring-indigo-500/50 bg-black/40">
-                        </label>
-
-                        <label
-                            class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5 cursor-pointer hover:bg-white/10 transition-all group">
-                            <div class="flex items-center space-x-3">
-                                <div
-                                    class="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center text-green-400 group-hover:scale-110 transition-transform">
-                                    <i class="fas fa-check-circle"></i>
-                                </div>
-                                <span class="font-medium">Conta Ativa</span>
-                            </div>
-                            <input type="checkbox" id="editIsActive"
-                                class="w-5 h-5 rounded border-white/10 text-indigo-600 focus:ring-indigo-500/50 bg-black/40">
-                        </label>
+                <div class="form-group">
+                    <div class="form-check">
+                        <input type="checkbox" id="editIsActive" class="form-check-input">
+                        <label for="editIsActive">Ativo</label>
                     </div>
                 </div>
 
-                <div class="pt-4 flex space-x-3">
-                    <button type="button" id="cancelEditBtn"
-                        class="flex-1 px-6 py-3 bg-white/5 hover:bg-white/10 text-white font-semibold rounded-xl transition-all active:scale-95">
-                        Cancelar
-                    </button>
-                    <button type="submit"
-                        class="flex-1 px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-500/20 active:scale-95">
-                        Salvar Alterações
-                    </button>
+                <div class="actions" style="margin-top: 1.5rem;">
+                    <button type="button" class="btn btn-secondary" id="closeEditUserModalBtn">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed top-4 right-4 transform translate-x-full opacity-0 transition-all duration-300 z-50">
-        <div class="glass px-6 py-3 rounded-xl shadow-xl flex items-center space-x-3">
-            <div id="toastIcon" class="text-lg"></div>
-            <p id="toastMessage" class="text-sm font-medium"></p>
-        </div>
-    </div>
+    <div class="toast" id="toast"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const sidebar = document.getElementById('sidebar');
             const logoutBtn = document.getElementById('logoutBtn');
+            const toast = document.getElementById('toast');
             const userAvatar = document.getElementById('userAvatar');
             const tabButtons = document.querySelectorAll('.tab-btn');
             const tabContents = document.querySelectorAll('.tab-content');
@@ -277,151 +544,238 @@
             const editUserModal = document.getElementById('editUserModal');
             const editUserForm = document.getElementById('editUserForm');
             const closeEditUserModalBtn = document.getElementById('closeEditUserModalBtn');
-            const cancelEditBtn = document.getElementById('cancelEditBtn');
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toastMessage');
-            const toastIcon = document.getElementById('toastIcon');
 
+            // Verifica se o usuário é admin
             let isAdminUser = false;
 
-            // Mobile Menu Toggle
+            // Toggle mobile menu
             mobileMenuBtn.addEventListener('click', () => {
-                sidebar.classList.toggle('-translate-x-full');
+                sidebar.classList.toggle('open');
             });
 
             // Tab switching
             tabButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const tabId = button.getAttribute('data-tab');
-                    tabButtons.forEach(btn => {
-                        btn.classList.remove('active', 'text-white');
-                        btn.classList.add('text-gray-400');
-                    });
-                    button.classList.add('active', 'text-white');
-                    button.classList.remove('text-gray-400');
 
-                    tabContents.forEach(content => content.classList.add('hidden'));
-                    document.getElementById(`${tabId}-tab`).classList.remove('hidden');
+                    // Update active tab button
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
 
-                    if (tabId === 'users') loadUsers();
-                    else if (tabId === 'external-links') loadExternalLinks();
+                    // Update active tab content
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+
+                    // Load data for the tab if needed
+                    if (tabId === 'users') {
+                        loadUsers();
+                    } else if (tabId === 'external-links') {
+                        loadExternalLinks();
+                    }
                 });
             });
 
             // Logout
             logoutBtn.addEventListener('click', async (e) => {
                 e.preventDefault();
+
                 try {
-                    const response = await fetch('/api/logout', { method: 'POST', credentials: 'include' });
-                    if (response.ok) window.location.href = '/login.html';
-                } catch (error) {
-                    showToast('Erro ao sair', 'error');
-                }
-            });
+                    const response = await fetch('/api/logout', {
+                        method: 'POST',
+                        credentials: 'include'
+                    });
 
-            // Load Profile
-            async function loadProfileData() {
-                try {
-                    const response = await fetch('/api/profile', { credentials: 'include' });
-                    const user = await response.json();
-                    if (!response.ok) throw new Error(user.error);
-
-                    userAvatar.src = user.profile_picture || '/assets/default-profile.png';
-                    isAdminUser = user.is_admin;
-
-                    if (!isAdminUser) {
-                        showToast('Acesso negado', 'error');
-                        setTimeout(() => window.location.href = 'dashboard.html', 2000);
+                    if (response.ok) {
+                        window.location.href = '/login.html';
+                    } else {
+                        const data = await response.json();
+                        throw new Error(data.error || 'Erro ao fazer logout');
                     }
                 } catch (error) {
                     showToast(error.message, 'error');
-                    if (error.message.includes('Não autenticado')) window.location.href = '/login.html';
+                }
+            });
+
+            // Load user profile data for avatar
+            async function loadProfileData() {
+                try {
+                    const response = await fetch('/api/profile', {
+                        credentials: 'include'
+                    });
+
+                    const user = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(user.error || 'Erro ao carregar perfil');
+                    }
+
+                    // Set avatar
+                    if (user.profile_picture) {
+                        userAvatar.src = user.profile_picture;
+                    } else {
+                        userAvatar.src = '/assets/default-profile.png';
+                    }
+
+                    // Check if user is admin
+                    isAdminUser = user.is_admin;
+
+                    if (!isAdminUser) {
+                        showToast('Você não tem permissão para acessar esta página', 'error');
+                        setTimeout(() => {
+                            window.location.href = 'dashboard.html';
+                        }, 2000);
+                    }
+
+                } catch (error) {
+                    showToast(error.message, 'error');
+
+                    // If not authenticated, redirect to login
+                    if (error.message.includes('Não autenticado') ||
+                        error.message.includes('Token inválido')) {
+                        window.location.href = '/login.html';
+                    }
                 }
             }
 
-            // Load Users
+            // Load all users
             async function loadUsers() {
                 try {
-                    const response = await fetch('/api/admin/users', { credentials: 'include' });
-                    const users = await response.json();
-                    if (!response.ok) throw new Error(users.error);
+                    const response = await fetch('/api/admin/users', {
+                        credentials: 'include'
+                    });
 
-                    usersTableBody.innerHTML = users.map(user => `
-                        <tr class="hover:bg-white/5 transition-colors group">
-                            <td class="px-6 py-4 text-sm text-gray-400 font-mono">#${user.id}</td>
-                            <td class="px-6 py-4">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-8 h-8 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-400 text-xs font-bold">
-                                        ${user.username.charAt(0).toUpperCase()}
-                                    </div>
-                                    <div>
-                                        <div class="text-sm font-bold text-white">${user.display_name || user.username}</div>
-                                        <div class="text-xs text-gray-500">@${user.username}</div>
-                                    </div>
+                    const users = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(users.error || 'Erro ao carregar usuários');
+                    }
+
+                    usersTableBody.innerHTML = '';
+
+                    users.forEach(user => {
+                        const row = document.createElement('tr');
+
+                        const statusBadge = user.is_active ?
+                            `<span class="badge badge-active">Ativo</span>` :
+                            `<span class="badge badge-inactive">Inativo</span>`;
+
+                        const adminBadge = user.is_admin ?
+                            `<span class="badge badge-admin">Admin</span>` : '';
+
+                        const verifiedBadge = user.is_verified ?
+                            `<span class="badge badge-verified">Verificado</span>` :
+                            `<span class="badge badge-unverified">Não verificado</span>`;
+
+                        row.innerHTML = `
+                            <td>${user.id}</td>
+                            <td>${user.display_name || user.username}</td>
+                            <td>${user.username}</td>
+                            <td>${user.email}</td>
+                            <td>
+                                ${statusBadge}
+                                ${adminBadge}
+                                ${verifiedBadge}
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-secondary edit-user-btn" data-id="${user.id}">Editar</button>
+                                    ${user.is_active ?
+                                        `<button class="btn btn-sm btn-danger deactivate-user-btn" data-id="${user.id}">Desativar</button>` :
+                                        `<button class="btn btn-sm btn-success activate-user-btn" data-id="${user.id}">Ativar</button>`}
                                 </div>
                             </td>
-                            <td class="px-6 py-4 text-sm text-gray-400">${user.email}</td>
-                            <td class="px-6 py-4">
-                                <div class="flex flex-wrap gap-1">
-                                    <span class="px-2 py-0.5 ${user.is_active ? 'bg-green-500/10 text-green-400 border-green-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'} text-[10px] font-bold uppercase rounded border">
-                                        ${user.is_active ? 'Ativo' : 'Inativo'}
-                                    </span>
-                                    ${user.is_admin ? '<span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-400 border-indigo-500/20 text-[10px] font-bold uppercase rounded border">Admin</span>' : ''}
-                                    <span class="px-2 py-0.5 ${user.is_verified ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' : 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'} text-[10px] font-bold uppercase rounded border">
-                                        ${user.is_verified ? 'Verificado' : 'Pendente'}
-                                    </span>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <button onclick="openEditUserModal(${user.id})" class="p-2 text-gray-400 hover:text-indigo-400 transition-colors" title="Editar Usuário">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="toggleUserStatus(${user.id}, ${!user.is_active})" class="p-2 ${user.is_active ? 'text-gray-400 hover:text-red-400' : 'text-gray-400 hover:text-green-400'} transition-colors" title="${user.is_active ? 'Desativar' : 'Ativar'}">
-                                    <i class="fas ${user.is_active ? 'fa-user-slash' : 'fa-user-check'}"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `).join('');
+                        `;
+
+                        usersTableBody.appendChild(row);
+                    });
+
+                    // Add event listeners to edit buttons
+                    document.querySelectorAll('.edit-user-btn').forEach(btn => {
+                        btn.addEventListener('click', () => openEditUserModal(btn.getAttribute('data-id')));
+                    });
+
+                    // Add event listeners to deactivate buttons
+                    document.querySelectorAll('.deactivate-user-btn').forEach(btn => {
+                        btn.addEventListener('click', () => toggleUserStatus(btn.getAttribute('data-id'), false));
+                    });
+
+                    // Add event listeners to activate buttons
+                    document.querySelectorAll('.activate-user-btn').forEach(btn => {
+                        btn.addEventListener('click', () => toggleUserStatus(btn.getAttribute('data-id'), true));
+                    });
+
                 } catch (error) {
                     showToast(error.message, 'error');
                 }
             }
 
-            // Load External Links
+            // Load all external links
             async function loadExternalLinks() {
                 try {
-                    const response = await fetch('/api/admin/external-links', { credentials: 'include' });
-                    const links = await response.json();
-                    if (!response.ok) throw new Error(links.error);
+                    const response = await fetch('/api/admin/external-links', {
+                        credentials: 'include'
+                    });
 
-                    linksTableBody.innerHTML = links.map(link => `
-                        <tr class="hover:bg-white/5 transition-colors group">
-                            <td class="px-6 py-4 text-sm text-gray-400 font-mono">${link.link_code}</td>
-                            <td class="px-6 py-4 text-sm font-bold text-white">${link.service_name}</td>
-                            <td class="px-6 py-4 text-sm text-gray-400">${link.display_name || link.username}</td>
-                            <td class="px-6 py-4">
-                                <span class="px-2 py-0.5 ${link.is_active ? 'bg-green-500/10 text-green-400 border-green-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'} text-[10px] font-bold uppercase rounded border">
-                                    ${link.is_active ? 'Ativo' : 'Inativo'}
-                                </span>
+                    const links = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(links.error || 'Erro ao carregar links externos');
+                    }
+
+                    linksTableBody.innerHTML = '';
+
+                    links.forEach(link => {
+                        const row = document.createElement('tr');
+
+                        const activeBadge = link.is_active ?
+                            `<span class="badge badge-active">Ativo</span>` :
+                            `<span class="badge badge-inactive">Inativo</span>`;
+
+                        row.innerHTML = `
+                            <td>${link.link_code}</td>
+                            <td>${link.service_name}</td>
+                            <td>${link.display_name || link.username}</td>
+                            <td>${link.callback_url}</td>
+                            <td>${activeBadge}</td>
+                            <td>
+                                <div class="btn-group">
+                                    ${link.is_active ?
+                                        `<button class="btn btn-sm btn-danger deactivate-link-btn" data-id="${link.id}">Desativar</button>` :
+                                        `<button class="btn btn-sm btn-success activate-link-btn" data-id="${link.id}">Ativar</button>`}
+                                </div>
                             </td>
-                            <td class="px-6 py-4 text-right">
-                                <button onclick="toggleLinkStatus(${link.id}, ${!link.is_active})" class="p-2 ${link.is_active ? 'text-gray-400 hover:text-red-400' : 'text-gray-400 hover:text-green-400'} transition-colors">
-                                    <i class="fas ${link.is_active ? 'fa-toggle-on' : 'fa-toggle-off'}"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `).join('');
+                        `;
+
+                        linksTableBody.appendChild(row);
+                    });
+
+                    // Add event listeners to deactivate buttons
+                    document.querySelectorAll('.deactivate-link-btn').forEach(btn => {
+                        btn.addEventListener('click', () => toggleLinkStatus(btn.getAttribute('data-id'), false));
+                    });
+
+                    // Add event listeners to activate buttons
+                    document.querySelectorAll('.activate-link-btn').forEach(btn => {
+                        btn.addEventListener('click', () => toggleLinkStatus(btn.getAttribute('data-id'), true));
+                    });
+
                 } catch (error) {
                     showToast(error.message, 'error');
                 }
             }
 
-            // User Actions
-            window.openEditUserModal = async (userId) => {
+            // Open edit user modal
+            async function openEditUserModal(userId) {
                 try {
-                    const response = await fetch(`/api/admin/users/${userId}`, { credentials: 'include' });
+                    const response = await fetch(`/api/admin/users/${userId}`, {
+                        credentials: 'include'
+                    });
+
                     const user = await response.json();
-                    if (!response.ok) throw new Error(user.error);
+
+                    if (!response.ok) {
+                        throw new Error(user.error || 'Erro ao carregar usuário');
+                    }
 
                     document.getElementById('editUserId').value = user.id;
                     document.getElementById('editUsername').value = user.username;
@@ -429,194 +783,130 @@
                     document.getElementById('editIsAdmin').checked = user.is_admin;
                     document.getElementById('editIsActive').checked = user.is_active;
 
-                    editUserModal.classList.remove('hidden');
+                    editUserModal.style.display = 'flex';
+
                 } catch (error) {
                     showToast(error.message, 'error');
                 }
-            };
+            }
 
-            window.toggleUserStatus = async (userId, status) => {
-                if (!confirm(`Deseja realmente ${status ? 'ativar' : 'desativar'} este usuário?`)) return;
-                try {
-                    const response = await fetch(`/api/admin/users/${userId}/status`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ is_active: status }),
-                        credentials: 'include'
-                    });
-                    if (!response.ok) throw new Error('Erro ao atualizar status');
-                    showToast(`Usuário ${status ? 'ativado' : 'desativado'} com sucesso`, 'success');
-                    loadUsers();
-                } catch (error) {
-                    showToast(error.message, 'error');
-                }
-            };
-
-            window.toggleLinkStatus = async (linkId, status) => {
-                try {
-                    const response = await fetch(`/api/admin/external-links/${linkId}/status`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ is_active: status }),
-                        credentials: 'include'
-                    });
-                    if (!response.ok) throw new Error('Erro ao atualizar status');
-                    showToast(`Link ${status ? 'ativado' : 'desativado'} com sucesso`, 'success');
-                    loadExternalLinks();
-                } catch (error) {
-                    showToast(error.message, 'error');
-                }
-            };
-
-            // Modal Controls
-            const closeModal = () => {
-                editUserModal.classList.add('hidden');
+            // Close edit user modal
+            closeEditUserModalBtn.addEventListener('click', () => {
+                editUserModal.style.display = 'none';
                 editUserForm.reset();
-            };
-            closeEditUserModalBtn.addEventListener('click', closeModal);
-            cancelEditBtn.addEventListener('click', closeModal);
+            });
 
+            // Save user changes
             editUserForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
+
                 const userId = document.getElementById('editUserId').value;
+                const isAdmin = document.getElementById('editIsAdmin').checked;
+                const isActive = document.getElementById('editIsActive').checked;
+
                 try {
                     const response = await fetch(`/api/admin/users/${userId}`, {
                         method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
                         body: JSON.stringify({
-                            is_admin: document.getElementById('editIsAdmin').checked,
-                            is_active: document.getElementById('editIsActive').checked
+                            is_admin: isAdmin,
+                            is_active: isActive
                         }),
                         credentials: 'include'
                     });
-                    if (!response.ok) throw new Error('Erro ao salvar alterações');
-                    showToast('Usuário atualizado com sucesso', 'success');
-                    closeModal();
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Erro ao atualizar usuário');
+                    }
+
+                    showToast('Usuário atualizado com sucesso!', 'success');
+                    editUserModal.style.display = 'none';
                     loadUsers();
+
                 } catch (error) {
                     showToast(error.message, 'error');
                 }
             });
 
-            function showToast(message, type) {
-                toastMessage.textContent = message;
-                toastIcon.innerHTML = type === 'success' ? '<i class="fas fa-check-circle text-green-500"></i>' : '<i class="fas fa-exclamation-circle text-red-500"></i>';
-                toast.classList.remove('translate-x-full', 'opacity-0');
-                setTimeout(() => toast.classList.add('translate-x-full', 'opacity-0'), 5000);
+            // Toggle user status (activate/deactivate)
+            async function toggleUserStatus(userId, activate) {
+                if (confirm(`Tem certeza que deseja ${activate ? 'ativar' : 'desativar'} este usuário?`)) {
+                    try {
+                        const response = await fetch(`/api/admin/users/${userId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                is_admin: false, // Keep current admin status
+                                is_active: activate
+                            }),
+                            credentials: 'include'
+                        });
+
+                        const data = await response.json();
+
+                        if (!response.ok) {
+                            throw new Error(data.error || `Erro ao ${activate ? 'ativar' : 'desativar'} usuário`);
+                        }
+
+                        showToast(`Usuário ${activate ? 'ativado' : 'desativado'} com sucesso!`, 'success');
+                        loadUsers();
+
+                    } catch (error) {
+                        showToast(error.message, 'error');
+                    }
+                }
             }
 
-            await loadProfileData();
+            // Toggle link status (activate/deactivate)
+            async function toggleLinkStatus(linkId, activate) {
+                if (confirm(`Tem certeza que deseja ${activate ? 'ativar' : 'desativar'} este link?`)) {
+                    try {
+                        const response = await fetch(`/api/external-links/${linkId}/status`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                is_active: activate
+                            }),
+                            credentials: 'include'
+                        });
+
+                        const data = await response.json();
+
+                        if (!response.ok) {
+                            throw new Error(data.error || `Erro ao ${activate ? 'ativar' : 'desativar'} link`);
+                        }
+
+                        showToast(`Link ${activate ? 'ativado' : 'desativado'} com sucesso!`, 'success');
+                        loadExternalLinks();
+
+                    } catch (error) {
+                        showToast(error.message, 'error');
+                    }
+                }
+            }
+
+            function showToast(message, type) {
+                toast.textContent = message;
+                toast.className = 'toast ' + type;
+                toast.classList.add('show');
+
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 5000);
+            }
+
+            // Initial load
+            loadProfileData();
             loadUsers();
         });
     </script>
 </body>
-
-</html>
-
-try {
-const response = await fetch(`/api/admin/users/${userId}`, {
-method: 'PUT',
-headers: {
-'Content-Type': 'application/json'
-},
-body: JSON.stringify({
-is_admin: isAdmin,
-is_active: isActive
-}),
-credentials: 'include'
-});
-
-const data = await response.json();
-
-if (!response.ok) {
-throw new Error(data.error || 'Erro ao atualizar usuário');
-}
-
-showToast('Usuário atualizado com sucesso!', 'success');
-editUserModal.style.display = 'none';
-loadUsers();
-
-} catch (error) {
-showToast(error.message, 'error');
-}
-});
-
-// Toggle user status (activate/deactivate)
-async function toggleUserStatus(userId, activate) {
-if (confirm(`Tem certeza que deseja ${activate ? 'ativar' : 'desativar'} este usuário?`)) {
-try {
-const response = await fetch(`/api/admin/users/${userId}`, {
-method: 'PUT',
-headers: {
-'Content-Type': 'application/json'
-},
-body: JSON.stringify({
-is_admin: false, // Keep current admin status
-is_active: activate
-}),
-credentials: 'include'
-});
-
-const data = await response.json();
-
-if (!response.ok) {
-throw new Error(data.error || `Erro ao ${activate ? 'ativar' : 'desativar'} usuário`);
-}
-
-showToast(`Usuário ${activate ? 'ativado' : 'desativado'} com sucesso!`, 'success');
-loadUsers();
-
-} catch (error) {
-showToast(error.message, 'error');
-}
-}
-}
-
-// Toggle link status (activate/deactivate)
-async function toggleLinkStatus(linkId, activate) {
-if (confirm(`Tem certeza que deseja ${activate ? 'ativar' : 'desativar'} este link?`)) {
-try {
-const response = await fetch(`/api/external-links/${linkId}/status`, {
-method: 'PUT',
-headers: {
-'Content-Type': 'application/json'
-},
-body: JSON.stringify({
-is_active: activate
-}),
-credentials: 'include'
-});
-
-const data = await response.json();
-
-if (!response.ok) {
-throw new Error(data.error || `Erro ao ${activate ? 'ativar' : 'desativar'} link`);
-}
-
-showToast(`Link ${activate ? 'ativado' : 'desativado'} com sucesso!`, 'success');
-loadExternalLinks();
-
-} catch (error) {
-showToast(error.message, 'error');
-}
-}
-}
-
-function showToast(message, type) {
-toast.textContent = message;
-toast.className = 'toast ' + type;
-toast.classList.add('show');
-
-setTimeout(() => {
-toast.classList.remove('show');
-}, 5000);
-}
-
-// Initial load
-loadProfileData();
-loadUsers();
-});
-</script>
-</body>
-
 </html>
