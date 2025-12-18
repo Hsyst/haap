@@ -1,224 +1,85 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - HAAP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #6e40c9;
-            --secondary: #00e0ff;
-            --dark: #121212;
-            --card: #1e1e1e;
-            --text: #ffffff;
-            --text-light: #e0e0e0;
-            --error: #ff4d4f;
-            --success: #52c41a;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--dark);
-            color: var(--text);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 1rem;
-        }
-
-        .login-container {
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .card {
-            background-color: var(--card);
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-
-        .logo {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .logo h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .logo p {
-            color: var(--text-light);
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-
-        .form-group label {
-            position: absolute;
-            top: 0.75rem;
-            left: 1rem;
-            color: var(--text-light);
-            transition: all 0.2s ease;
-            pointer-events: none;
-            background-color: var(--card);
-            padding: 0 0.25rem;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #333;
-            border-radius: 6px;
-            background-color: var(--dark);
-            color: var(--text);
-            font-size: 1rem;
-            transition: all 0.2s ease;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .form-group input:focus + label,
-        .form-group input:not(:placeholder-shown) + label {
-            top: -0.5rem;
-            left: 0.75rem;
-            font-size: 0.75rem;
-            color: var(--primary);
-        }
-
-        .btn {
-            width: 100%;
-            padding: 0.75rem;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #5d36b0;
-        }
-
-        .links {
-            margin-top: 1.5rem;
-            text-align: center;
-            font-size: 0.9rem;
-        }
-
-        .links a {
-            color: var(--secondary);
-            text-decoration: none;
-        }
-
-        .links a:hover {
-            text-decoration: underline;
-        }
-
-        .error-message {
-            color: var(--error);
-            font-size: 0.85rem;
-            margin-top: 0.25rem;
-            display: none;
-        }
-
-        .toast {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            padding: 1rem;
-            border-radius: 6px;
-            color: white;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transform: translateY(-100px);
-            opacity: 0;
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .toast.error {
-            background-color: var(--error);
-        }
-
-        .toast.success {
-            background-color: var(--success);
-        }
-
-        @media (max-width: 480px) {
-            .card {
-                padding: 1.5rem;
-            }
+        body { font-family: 'Inter', sans-serif; }
+        .glass {
+            background: rgba(30, 30, 30, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
-<body>
-    <div class="login-container">
-        <div class="card">
-            <div class="logo">
-                <h1>HAAP</h1>
-                <p>Hsyst Auth Authorization Plugin</p>
+<body class="bg-[#0a0a0a] text-white min-h-screen flex items-center justify-center p-4 selection:bg-indigo-500/30">
+    <div class="w-full max-w-md">
+        <div class="glass rounded-2xl p-8 shadow-2xl space-y-8">
+            <div class="text-center space-y-2">
+                <h1 class="text-4xl font-bold bg-gradient-to-r from-indigo-500 to-cyan-400 bg-clip-text text-transparent">HAAP</h1>
+                <p class="text-gray-400 text-sm font-medium">Hsyst Auth Authorization Plugin</p>
             </div>
 
-            <form id="loginForm">
-                <div class="form-group">
-                    <input type="text" id="login" name="login" placeholder=" " required>
-                    <label for="login">Usuário ou E-mail</label>
-                    <div class="error-message" id="loginError"></div>
+            <form id="loginForm" class="space-y-6">
+                <div class="space-y-2">
+                    <label for="login" class="text-sm font-medium text-gray-300 ml-1">Usuário ou E-mail</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 group-focus-within:text-indigo-500 transition-colors">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <input type="text" id="login" name="login" required
+                            class="block w-full pl-10 pr-3 py-3 bg-black/40 border border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all placeholder-gray-600"
+                            placeholder="Seu usuário ou e-mail">
+                    </div>
+                    <div class="text-red-500 text-xs mt-1 hidden" id="loginError"></div>
                 </div>
 
-                <div class="form-group">
-                    <input type="password" id="password" name="password" placeholder=" " required>
-                    <label for="password">Senha</label>
-                    <div class="error-message" id="passwordError"></div>
+                <div class="space-y-2">
+                    <label for="password" class="text-sm font-medium text-gray-300 ml-1">Senha</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 group-focus-within:text-indigo-500 transition-colors">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <input type="password" id="password" name="password" required
+                            class="block w-full pl-10 pr-3 py-3 bg-black/40 border border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all placeholder-gray-600"
+                            placeholder="••••••••">
+                    </div>
+                    <div class="text-red-500 text-xs mt-1 hidden" id="passwordError"></div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Entrar</button>
+                <button type="submit" 
+                    class="w-full py-3 px-4 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/20 transform active:scale-[0.98] transition-all duration-200">
+                    Entrar
+                </button>
             </form>
 
-            <div class="links">
-                <p>Não tem uma conta?</p>
-                <a href="register.html">Crie uma conta</a>
+            <div class="text-center">
+                <p class="text-gray-400 text-sm">
+                    Não tem uma conta? 
+                    <a href="register.html" class="text-indigo-400 hover:text-indigo-300 font-medium transition-colors">Crie uma conta</a>
+                </p>
             </div>
         </div>
     </div>
 
-    <div class="toast" id="toast"></div>
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-4 right-4 transform translate-x-full opacity-0 transition-all duration-300 z-50">
+        <div class="glass px-6 py-3 rounded-xl shadow-xl flex items-center space-x-3">
+            <div id="toastIcon" class="text-lg"></div>
+            <p id="toastMessage" class="text-sm font-medium"></p>
+        </div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const loginForm = document.getElementById('loginForm');
             const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
 
             loginForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -227,20 +88,14 @@
                 const password = document.getElementById('password').value;
 
                 // Reset errors
-                document.getElementById('loginError').style.display = 'none';
-                document.getElementById('passwordError').style.display = 'none';
+                document.getElementById('loginError').classList.add('hidden');
+                document.getElementById('passwordError').classList.add('hidden');
 
                 try {
-                    // Primeiro passo: obter o callback code
                     const response = await fetch('/api/login', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            login,
-                            password
-                        })
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ login, password })
                     });
 
                     const data = await response.json();
@@ -249,12 +104,9 @@
                         throw new Error(data.error || 'Erro ao fazer login');
                     }
 
-                    // Segundo passo: obter o token JWT usando o callback code
                     const callbackResponse = await fetch('/api/callback', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             login,
                             password,
@@ -268,38 +120,46 @@
                         throw new Error(callbackData.error || 'Erro ao completar login');
                     }
 
-                    // Redireciona para o dashboard após login bem-sucedido
-                    window.location.href = '/dashboard.html';
+                    showToast('Login realizado com sucesso! Redirecionando...', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/dashboard.html';
+                    }, 1500);
 
                 } catch (error) {
                     showToast(error.message, 'error');
 
-                    // Mostra erros específicos nos campos
                     if (error.message.includes('Credenciais inválidas')) {
                         document.getElementById('loginError').textContent = 'Usuário ou senha incorretos';
-                        document.getElementById('loginError').style.display = 'block';
+                        document.getElementById('loginError').classList.remove('hidden');
                         document.getElementById('passwordError').textContent = 'Usuário ou senha incorretos';
-                        document.getElementById('passwordError').style.display = 'block';
+                        document.getElementById('passwordError').classList.remove('hidden');
                     } else if (error.message.includes('E-mail não verificado')) {
                         document.getElementById('loginError').textContent = 'E-mail não verificado';
-                        document.getElementById('loginError').style.display = 'block';
+                        document.getElementById('loginError').classList.remove('hidden');
                     } else if (error.message.includes('Conta desativada')) {
                         document.getElementById('loginError').textContent = 'Conta desativada';
-                        document.getElementById('loginError').style.display = 'block';
+                        document.getElementById('loginError').classList.remove('hidden');
                     }
                 }
             });
 
             function showToast(message, type) {
-                toast.textContent = message;
-                toast.className = 'toast ' + type;
-                toast.classList.add('show');
+                toastMessage.textContent = message;
+                
+                if (type === 'success') {
+                    toastIcon.innerHTML = '<i class="fas fa-check-circle text-green-500"></i>';
+                } else {
+                    toastIcon.innerHTML = '<i class="fas fa-exclamation-circle text-red-500"></i>';
+                }
 
+                toast.classList.remove('translate-x-full', 'opacity-0');
+                
                 setTimeout(() => {
-                    toast.classList.remove('show');
+                    toast.classList.add('translate-x-full', 'opacity-0');
                 }, 5000);
             }
         });
     </script>
 </body>
 </html>
+

@@ -1,493 +1,205 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil - HAAP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #6e40c9;
-            --secondary: #00e0ff;
-            --dark: #121212;
-            --card: #1e1e1e;
-            --text: #ffffff;
-            --text-light: #e0e0e0;
-            --error: #ff4d4f;
-            --success: #52c41a;
-            --sidebar-width: 240px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--dark);
-            color: var(--text);
-            display: flex;
-            min-height: 100vh;
         }
 
-        .sidebar {
-            width: var(--sidebar-width);
-            background-color: var(--card);
-            padding: 1.5rem;
-            position: fixed;
-            height: 100vh;
-            transition: transform 0.3s ease;
-            z-index: 100;
+        .glass {
+            background: rgba(30, 30, 30, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .logo {
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-
-        .logo-text {
-            font-weight: 700;
-            font-size: 1.25rem;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .nav-menu {
-            list-style: none;
-        }
-
-        .nav-item {
-            margin-bottom: 0.5rem;
-        }
-
-        .nav-link {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem;
-            border-radius: 6px;
-            color: var(--text-light);
-            text-decoration: none;
-            transition: all 0.2s ease;
-            gap: 0.75rem;
-        }
-
-        .nav-link:hover {
-            background-color: rgba(110, 64, 201, 0.1);
-            color: var(--text);
-        }
-
-        .nav-link.active {
-            background-color: rgba(110, 64, 201, 0.2);
-            color: var(--primary);
-        }
-
-        .nav-link i {
-            width: 24px;
-            text-align: center;
-        }
-
-        .main-content {
-            flex: 1;
-            margin-left: var(--sidebar-width);
-            padding: 2rem;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .page-title {
-            font-size: 1.75rem;
-            font-weight: 600;
-        }
-
-        .user-menu {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            cursor: pointer;
-        }
-
-        .profile-container {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .profile-sidebar {
-            width: 280px;
-            flex-shrink: 0;
-        }
-
-        .profile-card {
-            background-color: var(--card);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-            margin-bottom: 1.5rem;
-        }
-
-        .avatar-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .avatar-preview {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 1rem;
-            border: 3px solid var(--primary);
-        }
-
-        .avatar-upload {
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-        }
-
-        .avatar-upload-btn {
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            background-color: var(--primary);
-            color: white;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: none;
-        }
-
-        .avatar-upload-btn:hover {
-            background-color: #5d36b0;
-        }
-
-        .avatar-upload input[type="file"] {
-            position: absolute;
-            left: 0;
-            top: 0;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-        }
-
-        .profile-content {
-            flex: 1;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--text-light);
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #333;
-            border-radius: 6px;
-            background-color: var(--dark);
-            color: var(--text);
-            font-size: 1rem;
-            transition: all 0.2s ease;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .form-row {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .form-row .form-group {
-            flex: 1;
-        }
-
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: none;
-        }
-
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #5d36b0;
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-        }
-
-        .btn-secondary:hover {
-            background-color: rgba(110, 64, 201, 0.1);
-        }
-
-        .actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--text);
-            font-size: 1.5rem;
-            cursor: pointer;
-            position: fixed;
-            top: 1rem;
-            left: 1rem;
-            z-index: 101;
-        }
-
-        .toast {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            padding: 1rem;
-            border-radius: 6px;
-            color: white;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transform: translateY(-100px);
-            opacity: 0;
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .toast.error {
-            background-color: var(--error);
-        }
-
-        .toast.success {
-            background-color: var(--success);
-        }
-
-        @media (max-width: 992px) {
-            .profile-container {
-                flex-direction: column;
-            }
-
-            .profile-sidebar {
-                width: 100%;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-
-            .sidebar.open {
-                transform: translateX(0);
-            }
-
-            .main-content {
-                margin-left: 0;
-                padding: 1rem;
-                padding-top: 4rem;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .form-row {
-                flex-direction: column;
-                gap: 0;
-            }
+        .sidebar-link.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: #818cf8;
+            border-right: 3px solid #6366f1;
         }
     </style>
 </head>
-<body>
-    <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
 
-    <aside class="sidebar" id="sidebar">
-        <div class="logo">
-            <div class="logo-icon">H</div>
-            <div class="logo-text">HAAP</div>
-        </div>
+<body class="bg-[#0a0a0a] text-white min-h-screen flex selection:bg-indigo-500/30">
+    <!-- Mobile Menu Button -->
+    <button id="mobileMenuBtn" class="lg:hidden fixed top-4 left-4 z-50 p-2 bg-indigo-600 rounded-lg shadow-lg">
+        <i class="fas fa-bars"></i>
+    </button>
 
-        <ul class="nav-menu">
-            <li class="nav-item">
-                <a href="dashboard.html" class="nav-link">
-                    <i>📊</i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="profile.html" class="nav-link active">
-                    <i>👤</i>
-                    <span>Perfil</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="external-links.html" class="nav-link">
-                    <i>🔗</i>
-                    <span>Links Externos</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="/login.html" class="nav-link" id="logoutBtn">
-                    <i>🚪</i>
-                    <span>Sair</span>
-                </a>
-            </li>
-        </ul>
-    </aside>
+    <!-- Sidebar -->
+    <aside id="sidebar"
+        class="fixed inset-y-0 left-0 z-40 w-64 bg-[#111] border-r border-white/5 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div class="h-full flex flex-col">
+            <div class="p-6 text-center">
+                <h1
+                    class="text-2xl font-bold bg-gradient-to-r from-indigo-500 to-cyan-400 bg-clip-text text-transparent">
+                    HAAP</h1>
+            </div>
 
-    <main class="main-content">
-        <div class="header">
-            <h1 class="page-title">Configurações do Perfil</h1>
-            <div class="user-menu">
-                <img src="" alt="Avatar" class="user-avatar" id="userAvatar">
+            <nav class="flex-1 px-4 space-y-2 mt-4">
+                <a href="dashboard.html"
+                    class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-xl transition-all hover:bg-white/5 group text-gray-400">
+                    <i class="fas fa-chart-pie w-5 text-center group-hover:scale-110 transition-transform"></i>
+                    <span class="font-medium">Dashboard</span>
+                </a>
+                <a href="profile.html"
+                    class="sidebar-link active flex items-center space-x-3 px-4 py-3 rounded-xl transition-all hover:bg-white/5 group">
+                    <i class="fas fa-user w-5 text-center group-hover:scale-110 transition-transform"></i>
+                    <span class="font-medium">Perfil</span>
+                </a>
+                <a href="external-links.html"
+                    class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-xl transition-all hover:bg-white/5 group text-gray-400">
+                    <i class="fas fa-link w-5 text-center group-hover:scale-110 transition-transform"></i>
+                    <span class="font-medium">Links Externos</span>
+                </a>
+            </nav>
+
+            <div class="p-4 border-t border-white/5">
+                <a href="#" id="logoutBtn"
+                    class="flex items-center space-x-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-400/10 transition-all group">
+                    <i class="fas fa-sign-out-alt w-5 text-center group-hover:translate-x-1 transition-transform"></i>
+                    <span class="font-medium">Sair</span>
+                </a>
             </div>
         </div>
+    </aside>
 
-        <div class="profile-container">
-            <div class="profile-sidebar">
-                <div class="profile-card">
-                    <div class="avatar-container">
-                        <img src="" alt="Avatar" class="avatar-preview" id="avatarPreview">
-                        <div class="avatar-upload">
-                            <button class="avatar-upload-btn">Alterar Foto</button>
-                            <input type="file" id="avatarInput" accept="image/jpeg,image/png,image/gif">
+    <!-- Main Content -->
+    <main class="flex-1 lg:ml-64 p-4 lg:p-8">
+        <div class="max-w-4xl mx-auto space-y-8">
+            <!-- Header -->
+            <div>
+                <h2 class="text-3xl font-bold text-white">Configurações de Perfil</h2>
+                <p class="text-gray-400">Gerencie suas informações pessoais e segurança.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Left: Avatar & Info -->
+                <div class="md:col-span-1 space-y-6">
+                    <div class="glass p-6 rounded-2xl text-center space-y-4">
+                        <div class="relative inline-block group">
+                            <img id="userAvatar" src="" alt="Avatar"
+                                class="w-32 h-32 rounded-2xl object-cover border-2 border-indigo-500/30 shadow-2xl">
+                            <div
+                                class="absolute inset-0 bg-black/40 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer">
+                                <i class="fas fa-camera text-2xl text-white"></i>
+                            </div>
                         </div>
-                        <small>Apenas JPG, PNG ou GIF. Máx. 5MB.</small>
+                        <div>
+                            <h3 id="displayUserName" class="text-xl font-bold text-white">Carregando...</h3>
+                            <p id="displayUserEmail" class="text-sm text-gray-400">seu@email.com</p>
+                        </div>
+                        <div class="pt-4 flex justify-center space-x-2">
+                            <span
+                                class="px-3 py-1 bg-indigo-500/10 text-indigo-400 text-[10px] font-bold uppercase tracking-wider rounded-full border border-indigo-500/20">Membro
+                                HAAP</span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="profile-card">
-                    <h3>Segurança</h3>
-                    <p>Altere sua senha ou configure autenticação de dois fatores.</p>
-                    <button class="btn btn-secondary" style="width: 100%; margin-top: 1rem;" id="changePasswordBtn">
-                        Alterar Senha
-                    </button>
-                </div>
-            </div>
-
-            <div class="profile-content">
-                <div class="profile-card">
-                    <form id="profileForm">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="username">Nome de usuário</label>
-                                <input type="text" id="username" class="form-control" required>
+                <!-- Right: Forms -->
+                <div class="md:col-span-2 space-y-8">
+                    <!-- Profile Update Form -->
+                    <div class="glass p-8 rounded-2xl shadow-xl space-y-6">
+                        <h4 class="text-lg font-bold flex items-center space-x-2">
+                            <i class="fas fa-id-card text-indigo-500"></i>
+                            <span>Informações Básicas</span>
+                        </h4>
+                        <form id="profileForm" class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="space-y-2">
+                                    <label for="username" class="text-sm font-medium text-gray-400 ml-1">Nome de
+                                        usuário</label>
+                                    <input type="text" id="username" readonly
+                                        class="block w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-gray-500 cursor-not-allowed outline-none">
+                                </div>
+                                <div class="space-y-2">
+                                    <label for="email" class="text-sm font-medium text-gray-400 ml-1">E-mail</label>
+                                    <input type="email" id="email" readonly
+                                        class="block w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-gray-500 cursor-not-allowed outline-none">
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="email">E-mail</label>
-                                <input type="email" id="email" class="form-control" required>
+                            <div class="space-y-2">
+                                <label for="displayName" class="text-sm font-medium text-gray-300 ml-1">Nome de
+                                    exibição</label>
+                                <input type="text" id="displayName"
+                                    class="block w-full px-4 py-3 bg-black/40 border border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all">
                             </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="displayName">Nome de exibição</label>
-                                <input type="text" id="displayName" class="form-control">
+                            <div class="space-y-2">
+                                <label for="pronouns" class="text-sm font-medium text-gray-300 ml-1">Pronomes</label>
+                                <input type="text" id="pronouns"
+                                    class="block w-full px-4 py-3 bg-black/40 border border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all"
+                                    placeholder="they/them">
                             </div>
-                            <div class="form-group">
-                                <label for="pronouns">Pronomes</label>
-                                <input type="text" id="pronouns" class="form-control" placeholder="they/them">
+                            <div class="space-y-2">
+                                <label for="description"
+                                    class="text-sm font-medium text-gray-300 ml-1">Descrição</label>
+                                <textarea id="description" rows="3"
+                                    class="block w-full px-4 py-3 bg-black/40 border border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all resize-none"></textarea>
                             </div>
-                        </div>
+                            <div class="space-y-2">
+                                <label for="avatarInput" class="text-sm font-medium text-gray-300 ml-1">Alterar foto de
+                                    perfil</label>
+                                <input type="file" id="avatarInput" accept="image/*"
+                                    class="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-indigo-500/10 file:text-indigo-400 hover:file:bg-indigo-500/20 transition-all">
+                            </div>
+                            <button type="submit"
+                                class="w-full sm:w-auto px-8 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-500/20 active:scale-95">
+                                Salvar Alterações
+                            </button>
+                        </form>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="description">Descrição</label>
-                            <textarea id="description" class="form-control" rows="4"></textarea>
-                        </div>
-
-                        <div class="actions">
-                            <button type="button" class="btn btn-secondary" id="cancelBtn">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
-                        </div>
-                    </form>
+                    <!-- Password Change Form -->
+                    <div class="glass p-8 rounded-2xl shadow-xl space-y-6">
+                        <h4 class="text-lg font-bold flex items-center space-x-2 text-red-400">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Segurança</span>
+                        </h4>
+                        <form id="passwordForm" class="space-y-4">
+                            <div class="space-y-2">
+                                <label for="currentPassword" class="text-sm font-medium text-gray-300 ml-1">Senha
+                                    atual</label>
+                                <input type="password" id="currentPassword" required
+                                    class="block w-full px-4 py-3 bg-black/40 border border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all">
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="space-y-2">
+                                    <label for="newPassword" class="text-sm font-medium text-gray-300 ml-1">Nova
+                                        senha</label>
+                                    <input type="password" id="newPassword" required
+                                        class="block w-full px-4 py-3 bg-black/40 border border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all">
+                                </div>
+                                <div class="space-y-2">
+                                    <label for="confirmPassword"
+                                        class="text-sm font-medium text-gray-300 ml-1">Confirmar nova senha</label>
+                                    <input type="password" id="confirmPassword" required
+                                        class="block w-full px-4 py-3 bg-black/40 border border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all">
+                                </div>
+                            </div>
+                            <button type="submit"
+                                class="w-full sm:w-auto px-8 py-3 bg-red-500/10 hover:bg-red-500/20 text-red-400 font-semibold rounded-xl border border-red-500/20 transition-all active:scale-95">
+                                Atualizar Senha
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <div class="toast" id="toast"></div>
-
-    <!-- Modal de Alteração de Senha -->
-    <div class="modal" id="passwordModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;">
-        <div style="background-color: var(--card); padding: 2rem; border-radius: 12px; width: 100%; max-width: 500px;">
-            <h2 style="margin-bottom: 1.5rem;">Alterar Senha</h2>
-
-            <form id="passwordForm">
-                <div class="form-group">
-                    <label for="currentPassword">Senha Atual</label>
-                    <input type="password" id="currentPassword" class="form-control" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="newPassword">Nova Senha</label>
-                    <input type="password" id="newPassword" class="form-control" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="confirmPassword">Confirmar Nova Senha</label>
-                    <input type="password" id="confirmPassword" class="form-control" required>
-                </div>
-
-                <div class="actions" style="margin-top: 1.5rem;">
-                    <button type="button" class="btn btn-secondary" id="closeModalBtn">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Alterar Senha</button>
-                </div>
-            </form>
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-4 right-4 transform translate-x-full opacity-0 transition-all duration-300 z-50">
+        <div class="glass px-6 py-3 rounded-xl shadow-xl flex items-center space-x-3">
+            <div id="toastIcon" class="text-lg"></div>
+            <p id="toastMessage" class="text-sm font-medium"></p>
         </div>
     </div>
 
@@ -496,137 +208,60 @@
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const sidebar = document.getElementById('sidebar');
             const logoutBtn = document.getElementById('logoutBtn');
-            const toast = document.getElementById('toast');
-            const userAvatar = document.getElementById('userAvatar');
-            const avatarPreview = document.getElementById('avatarPreview');
-            const avatarInput = document.getElementById('avatarInput');
             const profileForm = document.getElementById('profileForm');
-            const changePasswordBtn = document.getElementById('changePasswordBtn');
-            const passwordModal = document.getElementById('passwordModal');
-            const closeModalBtn = document.getElementById('closeModalBtn');
             const passwordForm = document.getElementById('passwordForm');
-            const cancelBtn = document.getElementById('cancelBtn');
+            const avatarInput = document.getElementById('avatarInput');
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
 
-            let originalProfileData = {};
-            let selectedFile = null;
-
-            // Toggle mobile menu
+            // Mobile Menu Toggle
             mobileMenuBtn.addEventListener('click', () => {
-                sidebar.classList.toggle('open');
+                sidebar.classList.toggle('-translate-x-full');
             });
 
             // Logout
             logoutBtn.addEventListener('click', async (e) => {
                 e.preventDefault();
-
                 try {
-                    const response = await fetch('/api/logout', {
-                        method: 'POST',
-                        credentials: 'include'
-                    });
-
-                    if (response.ok) {
-                        window.location.href = '/login.html';
-                    } else {
-                        const data = await response.json();
-                        throw new Error(data.error || 'Erro ao fazer logout');
-                    }
+                    const response = await fetch('/api/logout', { method: 'POST', credentials: 'include' });
+                    if (response.ok) window.location.href = '/login.html';
                 } catch (error) {
-                    showToast(error.message, 'error');
+                    showToast('Erro ao sair', 'error');
                 }
             });
 
-            // Load user profile data
-            async function loadProfileData() {
+            // Load Profile Data
+            async function loadProfile() {
                 try {
-                    const response = await fetch('/api/profile', {
-                        credentials: 'include'
-                    });
-
+                    const response = await fetch('/api/profile', { credentials: 'include' });
                     const user = await response.json();
+                    if (!response.ok) throw new Error(user.error);
 
-                    if (!response.ok) {
-                        throw new Error(user.error || 'Erro ao carregar perfil');
-                    }
-
-                    // Set user data in form
                     document.getElementById('username').value = user.username;
                     document.getElementById('email').value = user.email;
-                    document.getElementById('displayName').value = user.display_name || user.username;
-                    document.getElementById('pronouns').value = user.pronouns || 'they/them';
-                    document.getElementById('description').value = user.description || 'Estou no HAAP!';
+                    document.getElementById('displayName').value = user.display_name || '';
+                    document.getElementById('pronouns').value = user.pronouns || '';
+                    document.getElementById('description').value = user.description || '';
 
-                    // Set avatars
-                    if (user.profile_picture) {
-                        avatarPreview.src = user.profile_picture;
-                        userAvatar.src = user.profile_picture;
-                    } else {
-                        avatarPreview.src = '/assets/default-profile.png';
-                        userAvatar.src = '/assets/default-profile.png';
-                    }
-
-                    // Save original data for comparison
-                    originalProfileData = { ...user };
-
+                    document.getElementById('displayUserName').textContent = user.display_name || user.username;
+                    document.getElementById('displayUserEmail').textContent = user.email;
+                    document.getElementById('userAvatar').src = user.profile_picture || '/assets/default-profile.png';
                 } catch (error) {
                     showToast(error.message, 'error');
-
-                    // If not authenticated, redirect to login
-                    if (error.message.includes('Não autenticado') ||
-                        error.message.includes('Token inválido')) {
-                        window.location.href = '/login.html';
-                    }
+                    if (error.message.includes('Não autenticado')) window.location.href = '/login.html';
                 }
             }
 
-            // Handle avatar upload
-            avatarInput.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-
-                // Validate file type
-                const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
-                if (!validTypes.includes(file.type)) {
-                    showToast('Apenas imagens JPG, PNG ou GIF são permitidas', 'error');
-                    return;
-                }
-
-                // Validate file size (5MB)
-                if (file.size > 5 * 1024 * 1024) {
-                    showToast('A imagem deve ter no máximo 5MB', 'error');
-                    return;
-                }
-
-                selectedFile = file;
-
-                // Preview image
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    avatarPreview.src = event.target.result;
-                };
-                reader.readAsDataURL(file);
-            });
-
-            // Handle profile form submission
+            // Update Profile
             profileForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-
                 const formData = new FormData();
-
-                // Add profile data
-                const profileData = {
-                    display_name: document.getElementById('displayName').value,
-                    pronouns: document.getElementById('pronouns').value,
-                    description: document.getElementById('description').value
-                };
-
-                formData.append('display_name', profileData.display_name);
-                formData.append('pronouns', profileData.pronouns);
-                formData.append('description', profileData.description);
-
-                // Add file if selected
-                if (selectedFile) {
-                    formData.append('profile_picture', selectedFile);
+                formData.append('display_name', document.getElementById('displayName').value);
+                formData.append('pronouns', document.getElementById('pronouns').value);
+                formData.append('description', document.getElementById('description').value);
+                if (avatarInput.files[0]) {
+                    formData.append('profile_picture', avatarInput.files[0]);
                 }
 
                 try {
@@ -635,51 +270,18 @@
                         body: formData,
                         credentials: 'include'
                     });
-
                     const data = await response.json();
-
-                    if (!response.ok) {
-                        throw new Error(data.error || 'Erro ao atualizar perfil');
-                    }
-
+                    if (!response.ok) throw new Error(data.error);
                     showToast('Perfil atualizado com sucesso!', 'success');
-                    loadProfileData(); // Refresh data
-                    selectedFile = null;
-
+                    loadProfile();
                 } catch (error) {
                     showToast(error.message, 'error');
                 }
             });
 
-            // Handle cancel button
-            cancelBtn.addEventListener('click', () => {
-                // Reset form to original values
-                document.getElementById('displayName').value = originalProfileData.display_name || originalProfileData.username;
-                document.getElementById('pronouns').value = originalProfileData.pronouns || 'they/them';
-                document.getElementById('description').value = originalProfileData.description || 'Estou no HAAP!';
-
-                // Reset avatar if changed
-                if (selectedFile) {
-                    avatarPreview.src = originalProfileData.profile_picture || '/assets/default-profile.png';
-                    selectedFile = null;
-                    avatarInput.value = '';
-                }
-            });
-
-            // Password change modal
-            changePasswordBtn.addEventListener('click', () => {
-                passwordModal.style.display = 'flex';
-            });
-
-            closeModalBtn.addEventListener('click', () => {
-                passwordModal.style.display = 'none';
-                passwordForm.reset();
-            });
-
-            // Handle password form submission
+            // Change Password
             passwordForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-
                 const currentPassword = document.getElementById('currentPassword').value;
                 const newPassword = document.getElementById('newPassword').value;
                 const confirmPassword = document.getElementById('confirmPassword').value;
@@ -692,44 +294,29 @@
                 try {
                     const response = await fetch('/api/change-password', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            current_password: currentPassword,
-                            new_password: newPassword
-                        }),
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ current_password: currentPassword, new_password: newPassword }),
                         credentials: 'include'
                     });
-
                     const data = await response.json();
-
-                    if (!response.ok) {
-                        throw new Error(data.error || 'Erro ao alterar senha');
-                    }
-
+                    if (!response.ok) throw new Error(data.error);
                     showToast('Senha alterada com sucesso!', 'success');
-                    passwordModal.style.display = 'none';
                     passwordForm.reset();
-
                 } catch (error) {
                     showToast(error.message, 'error');
                 }
             });
 
             function showToast(message, type) {
-                toast.textContent = message;
-                toast.className = 'toast ' + type;
-                toast.classList.add('show');
-
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                }, 5000);
+                toastMessage.textContent = message;
+                toastIcon.innerHTML = type === 'success' ? '<i class="fas fa-check-circle text-green-500"></i>' : '<i class="fas fa-exclamation-circle text-red-500"></i>';
+                toast.classList.remove('translate-x-full', 'opacity-0');
+                setTimeout(() => toast.classList.add('translate-x-full', 'opacity-0'), 5000);
             }
 
-            // Initial load
-            loadProfileData();
+            loadProfile();
         });
     </script>
 </body>
+
 </html>

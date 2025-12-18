@@ -1,0 +1,4 @@
+node_modules/
+haap-db.sqlite
+haap-config.json
+service/uploads

@@ -1,800 +1,367 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Links Externos - HAAP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #6e40c9;
-            --secondary: #00e0ff;
-            --dark: #121212;
-            --card: #1e1e1e;
-            --text: #ffffff;
-            --text-light: #e0e0e0;
-            --error: #ff4d4f;
-            --success: #52c41a;
-            --sidebar-width: 240px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--dark);
-            color: var(--text);
-            display: flex;
-            min-height: 100vh;
         }
 
-        .sidebar {
-            width: var(--sidebar-width);
-            background-color: var(--card);
-            padding: 1.5rem;
-            position: fixed;
-            height: 100vh;
-            transition: transform 0.3s ease;
-            z-index: 100;
+        .glass {
+            background: rgba(30, 30, 30, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .logo {
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
+        .sidebar-link.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: #818cf8;
+            border-right: 3px solid #6366f1;
         }
 
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-
-        .logo-text {
-            font-weight: 700;
-            font-size: 1.25rem;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .nav-menu {
-            list-style: none;
-        }
-
-        .nav-item {
-            margin-bottom: 0.5rem;
-        }
-
-        .nav-link {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem;
-            border-radius: 6px;
-            color: var(--text-light);
-            text-decoration: none;
-            transition: all 0.2s ease;
-            gap: 0.75rem;
-        }
-
-        .nav-link:hover {
-            background-color: rgba(110, 64, 201, 0.1);
-            color: var(--text);
-        }
-
-        .nav-link.active {
-            background-color: rgba(110, 64, 201, 0.2);
-            color: var(--primary);
-        }
-
-        .nav-link i {
-            width: 24px;
-            text-align: center;
-        }
-
-        .main-content {
-            flex: 1;
-            margin-left: var(--sidebar-width);
-            padding: 2rem;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .page-title {
-            font-size: 1.75rem;
-            font-weight: 600;
-        }
-
-        .user-menu {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            cursor: pointer;
-        }
-
-        .actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .btn {
-            padding: 0.75rem 1.25rem;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #5d36b0;
-        }
-
-        .links-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .link-card {
-            background-color: var(--card);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        .link-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .link-title {
-            font-size: 1.1rem;
-            font-weight: 500;
-        }
-
-        .link-status {
-            display: inline-block;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-
-        .status-active {
-            background-color: rgba(82, 196, 26, 0.1);
-            color: var(--success);
-        }
-
-        .status-inactive {
-            background-color: rgba(255, 77, 79, 0.1);
-            color: var(--error);
-        }
-
-        .link-meta {
-            color: var(--text-light);
-            font-size: 0.85rem;
-            margin-bottom: 1rem;
-        }
-
-        .link-permissions {
-            margin-bottom: 1.5rem;
-        }
-
-        .permission-tag {
-            display: inline-block;
-            padding: 0.25rem 0.5rem;
-            background-color: rgba(110, 64, 201, 0.1);
-            color: var(--primary);
-            border-radius: 4px;
-            font-size: 0.75rem;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .link-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .btn-sm {
-            padding: 0.5rem 0.75rem;
-            font-size: 0.85rem;
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-        }
-
-        .btn-secondary:hover {
-            background-color: rgba(110, 64, 201, 0.1);
-        }
-
-        .btn-danger {
-            background-color: transparent;
-            border: 1px solid var(--error);
-            color: var(--error);
-        }
-
-        .btn-danger:hover {
-            background-color: rgba(255, 77, 79, 0.1);
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--text);
-            font-size: 1.5rem;
-            cursor: pointer;
-            position: fixed;
-            top: 1rem;
-            left: 1rem;
-            z-index: 101;
-        }
-
-        .toast {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            padding: 1rem;
-            border-radius: 6px;
-            color: white;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transform: translateY(-100px);
-            opacity: 0;
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .toast.error {
-            background-color: var(--error);
-        }
-
-        .toast.success {
-            background-color: var(--success);
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: var(--card);
-            padding: 2rem;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            color: var(--text-light);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--text-light);
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #333;
-            border-radius: 6px;
-            background-color: var(--dark);
-            color: var(--text);
-            font-size: 1rem;
-            transition: all 0.2s ease;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .checkbox-group {
-            margin-top: 1rem;
-        }
-
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 0.75rem;
-        }
-
-        .checkbox-item input {
-            margin-right: 0.75rem;
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-
-            .sidebar.open {
-                transform: translateX(0);
-            }
-
-            .main-content {
-                margin-left: 0;
-                padding: 1rem;
-                padding-top: 4rem;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .links-grid {
-                grid-template-columns: 1fr;
-            }
+        .modal-backdrop {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
         }
     </style>
 </head>
-<body>
-    <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
 
-    <aside class="sidebar" id="sidebar">
-        <div class="logo">
-            <div class="logo-icon">H</div>
-            <div class="logo-text">HAAP</div>
-        </div>
+<body class="bg-[#0a0a0a] text-white min-h-screen flex selection:bg-indigo-500/30">
+    <!-- Mobile Menu Button -->
+    <button id="mobileMenuBtn" class="lg:hidden fixed top-4 left-4 z-50 p-2 bg-indigo-600 rounded-lg shadow-lg">
+        <i class="fas fa-bars"></i>
+    </button>
 
-        <ul class="nav-menu">
-            <li class="nav-item">
-                <a href="dashboard.html" class="nav-link">
-                    <i>📊</i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="profile.html" class="nav-link">
-                    <i>👤</i>
-                    <span>Perfil</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="external-links.html" class="nav-link active">
-                    <i>🔗</i>
-                    <span>Links Externos</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="/login.html" class="nav-link" id="logoutBtn">
-                    <i>🚪</i>
-                    <span>Sair</span>
-                </a>
-            </li>
-        </ul>
-    </aside>
+    <!-- Sidebar -->
+    <aside id="sidebar"
+        class="fixed inset-y-0 left-0 z-40 w-64 bg-[#111] border-r border-white/5 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div class="h-full flex flex-col">
+            <div class="p-6 text-center">
+                <h1
+                    class="text-2xl font-bold bg-gradient-to-r from-indigo-500 to-cyan-400 bg-clip-text text-transparent">
+                    HAAP</h1>
+            </div>
 
-    <main class="main-content">
-        <div class="header">
-            <h1 class="page-title">Links de Login Externo</h1>
-            <div class="user-menu">
-                <img src="" alt="Avatar" class="user-avatar" id="userAvatar">
+            <nav class="flex-1 px-4 space-y-2 mt-4">
+                <a href="dashboard.html"
+                    class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-xl transition-all hover:bg-white/5 group text-gray-400">
+                    <i class="fas fa-chart-pie w-5 text-center group-hover:scale-110 transition-transform"></i>
+                    <span class="font-medium">Dashboard</span>
+                </a>
+                <a href="profile.html"
+                    class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-xl transition-all hover:bg-white/5 group text-gray-400">
+                    <i class="fas fa-user w-5 text-center group-hover:scale-110 transition-transform"></i>
+                    <span class="font-medium">Perfil</span>
+                </a>
+                <a href="external-links.html"
+                    class="sidebar-link active flex items-center space-x-3 px-4 py-3 rounded-xl transition-all hover:bg-white/5 group">
+                    <i class="fas fa-link w-5 text-center group-hover:scale-110 transition-transform"></i>
+                    <span class="font-medium">Links Externos</span>
+                </a>
+            </nav>
+
+            <div class="p-4 border-t border-white/5">
+                <a href="#" id="logoutBtn"
+                    class="flex items-center space-x-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-400/10 transition-all group">
+                    <i class="fas fa-sign-out-alt w-5 text-center group-hover:translate-x-1 transition-transform"></i>
+                    <span class="font-medium">Sair</span>
+                </a>
             </div>
         </div>
+    </aside>
 
-        <div class="actions">
-            <button class="btn btn-primary" id="createLinkBtn">
-                <i>➕</i>
-                <span>Criar Novo Link</span>
-            </button>
-        </div>
-
-        <div class="links-grid" id="linksGrid">
-            <div class="link-card">
-                <div class="link-header">
-                    <h3 class="link-title">Carregando...</h3>
-                    <span class="link-status status-active">Carregando</span>
+    <!-- Main Content -->
+    <main class="flex-1 lg:ml-64 p-4 lg:p-8">
+        <div class="max-w-6xl mx-auto space-y-8">
+            <!-- Header -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-3xl font-bold text-white">Links de Login Externo</h2>
+                    <p class="text-gray-400">Gerencie as integrações que utilizam o HAAP para autenticação.</p>
                 </div>
-                <div class="link-meta">Aguarde enquanto carregamos seus links</div>
-                <div class="link-permissions">
-                    <span class="permission-tag">Carregando</span>
+                <button id="createLinkBtn"
+                    class="inline-flex items-center space-x-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-500/20 active:scale-95">
+                    <i class="fas fa-plus"></i>
+                    <span>Novo Link</span>
+                </button>
+            </div>
+
+            <!-- Links Grid -->
+            <div id="linksGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <!-- Loading State -->
+                <div class="glass p-6 rounded-2xl animate-pulse space-y-4">
+                    <div class="h-6 bg-white/10 rounded w-3/4"></div>
+                    <div class="h-4 bg-white/5 rounded w-1/2"></div>
+                    <div class="flex space-x-2">
+                        <div class="h-8 bg-white/5 rounded-full w-16"></div>
+                        <div class="h-8 bg-white/5 rounded-full w-16"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Modal de Criação de Link -->
-    <div class="modal" id="createLinkModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Criar Novo Link</h3>
-                <button class="modal-close" id="closeModalBtn">&times;</button>
+    <!-- Create Link Modal -->
+    <div id="createLinkModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop">
+        <div
+            class="glass w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+            <div class="p-6 border-b border-white/5 flex items-center justify-between">
+                <h3 class="text-xl font-bold">Criar Novo Link</h3>
+                <button id="closeModalBtn" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
             </div>
-
-            <form id="linkForm">
-                <div class="form-group">
-                    <label for="serviceName">Nome do Serviço</label>
-                    <input type="text" id="serviceName" class="form-control" required>
+            <form id="linkForm" class="p-6 space-y-4">
+                <div class="space-y-2">
+                    <label for="serviceName" class="text-sm font-medium text-gray-300 ml-1">Nome do Serviço</label>
+                    <input type="text" id="serviceName" required
+                        class="block w-full px-4 py-3 bg-black/40 border border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all"
+                        placeholder="Ex: Meu Blog">
+                </div>
+                <div class="space-y-2">
+                    <label for="callbackUrl" class="text-sm font-medium text-gray-300 ml-1">URL de Callback</label>
+                    <input type="url" id="callbackUrl" required
+                        class="block w-full px-4 py-3 bg-black/40 border border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all"
+                        placeholder="https://seusite.com/auth/callback">
+                </div>
+                <div class="space-y-2">
+                    <label for="homepageUrl" class="text-sm font-medium text-gray-300 ml-1">URL da Homepage</label>
+                    <input type="url" id="homepageUrl" required
+                        class="block w-full px-4 py-3 bg-black/40 border border-white/10 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all"
+                        placeholder="https://seusite.com">
                 </div>
 
-                <div class="form-group">
-                    <label for="callbackUrl">URL de Callback</label>
-                    <input type="url" id="callbackUrl" class="form-control" required placeholder="https://seusite.com/auth/callback">
-                </div>
-
-                <div class="form-group">
-                    <label for="homepageUrl">URL da Homepage</label>
-                    <input type="url" id="homepageUrl" class="form-control" required placeholder="https://seusite.com">
-                </div>
-
-                <div class="form-group">
-                    <label>Informações Fornecidas</label>
-                    <div class="checkbox-group">
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="provideId" name="provides" value="id" checked>
-                            <label for="provideId">ID do Usuário</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="provideUsername" name="provides" value="username" checked>
-                            <label for="provideUsername">Nome de Usuário</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="provideEmail" name="provides" value="email">
-                            <label for="provideEmail">E-mail</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="provideDisplayName" name="provides" value="display_name">
-                            <label for="provideDisplayName">Nome de Exibição</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="provideProfilePicture" name="provides" value="profile_picture">
-                            <label for="provideProfilePicture">Foto de Perfil</label>
-                        </div>
+                <div class="space-y-3">
+                    <label class="text-sm font-medium text-gray-300 ml-1">Informações Fornecidas</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label
+                            class="flex items-center space-x-3 p-3 bg-white/5 rounded-xl border border-white/5 cursor-pointer hover:bg-white/10 transition-all">
+                            <input type="checkbox" name="provides" value="id" checked
+                                class="w-4 h-4 rounded border-white/10 text-indigo-600 focus:ring-indigo-500/50 bg-black/40">
+                            <span class="text-sm text-gray-300">ID Usuário</span>
+                        </label>
+                        <label
+                            class="flex items-center space-x-3 p-3 bg-white/5 rounded-xl border border-white/5 cursor-pointer hover:bg-white/10 transition-all">
+                            <input type="checkbox" name="provides" value="username" checked
+                                class="w-4 h-4 rounded border-white/10 text-indigo-600 focus:ring-indigo-500/50 bg-black/40">
+                            <span class="text-sm text-gray-300">Username</span>
+                        </label>
+                        <label
+                            class="flex items-center space-x-3 p-3 bg-white/5 rounded-xl border border-white/5 cursor-pointer hover:bg-white/10 transition-all">
+                            <input type="checkbox" name="provides" value="email"
+                                class="w-4 h-4 rounded border-white/10 text-indigo-600 focus:ring-indigo-500/50 bg-black/40">
+                            <span class="text-sm text-gray-300">E-mail</span>
+                        </label>
+                        <label
+                            class="flex items-center space-x-3 p-3 bg-white/5 rounded-xl border border-white/5 cursor-pointer hover:bg-white/10 transition-all">
+                            <input type="checkbox" name="provides" value="display_name"
+                                class="w-4 h-4 rounded border-white/10 text-indigo-600 focus:ring-indigo-500/50 bg-black/40">
+                            <span class="text-sm text-gray-300">Nome Exibição</span>
+                        </label>
+                        <label
+                            class="flex items-center space-x-3 p-3 bg-white/5 rounded-xl border border-white/5 cursor-pointer hover:bg-white/10 transition-all">
+                            <input type="checkbox" name="provides" value="profile_picture"
+                                class="w-4 h-4 rounded border-white/10 text-indigo-600 focus:ring-indigo-500/50 bg-black/40">
+                            <span class="text-sm text-gray-300">Foto Perfil</span>
+                        </label>
                     </div>
                 </div>
 
-                <div class="actions" style="justify-content: flex-end; margin-top: 2rem;">
-                    <button type="button" class="btn btn-secondary" id="cancelCreateBtn">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Criar Link</button>
+                <div class="pt-4 flex space-x-3">
+                    <button type="button" id="cancelCreateBtn"
+                        class="flex-1 px-6 py-3 bg-white/5 hover:bg-white/10 text-white font-semibold rounded-xl transition-all active:scale-95">
+                        Cancelar
+                    </button>
+                    <button type="submit"
+                        class="flex-1 px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-500/20 active:scale-95">
+                        Criar Link
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
-    <div class="toast" id="toast"></div>
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-4 right-4 transform translate-x-full opacity-0 transition-all duration-300 z-50">
+        <div class="glass px-6 py-3 rounded-xl shadow-xl flex items-center space-x-3">
+            <div id="toastIcon" class="text-lg"></div>
+            <p id="toastMessage" class="text-sm font-medium"></p>
+        </div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const sidebar = document.getElementById('sidebar');
             const logoutBtn = document.getElementById('logoutBtn');
-            const toast = document.getElementById('toast');
-            const userAvatar = document.getElementById('userAvatar');
             const linksGrid = document.getElementById('linksGrid');
             const createLinkBtn = document.getElementById('createLinkBtn');
             const createLinkModal = document.getElementById('createLinkModal');
             const closeModalBtn = document.getElementById('closeModalBtn');
             const cancelCreateBtn = document.getElementById('cancelCreateBtn');
             const linkForm = document.getElementById('linkForm');
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
 
-            // Toggle mobile menu
+            // Mobile Menu Toggle
             mobileMenuBtn.addEventListener('click', () => {
-                sidebar.classList.toggle('open');
+                sidebar.classList.toggle('-translate-x-full');
             });
 
             // Logout
             logoutBtn.addEventListener('click', async (e) => {
                 e.preventDefault();
-
                 try {
-                    const response = await fetch('/api/logout', {
-                        method: 'POST',
-                        credentials: 'include'
-                    });
-
-                    if (response.ok) {
-                        window.location.href = '/login.html';
-                    } else {
-                        const data = await response.json();
-                        throw new Error(data.error || 'Erro ao fazer logout');
-                    }
+                    const response = await fetch('/api/logout', { method: 'POST', credentials: 'include' });
+                    if (response.ok) window.location.href = '/login.html';
                 } catch (error) {
-                    showToast(error.message, 'error');
+                    showToast('Erro ao sair', 'error');
                 }
             });
 
-            // Load user data
-            async function loadUserData() {
-                try {
-                    const response = await fetch('/api/profile', {
-                        credentials: 'include'
-                    });
-
-                    const user = await response.json();
-
-                    if (!response.ok) {
-                        throw new Error(user.error || 'Erro ao carregar perfil');
-                    }
-
-                    // Set user avatar
-                    if (user.profile_picture) {
-                        userAvatar.src = user.profile_picture;
-                    } else {
-                        userAvatar.src = '/assets/default-profile.png';
-                    }
-
-                } catch (error) {
-                    showToast(error.message, 'error');
-
-                    // If not authenticated, redirect to login
-                    if (error.message.includes('Não autenticado') ||
-                        error.message.includes('Token inválido')) {
-                        window.location.href = '/login.html';
-                    }
-                }
-            }
-
-            // Load external links
+            // Load External Links
             async function loadExternalLinks() {
                 try {
-                    const response = await fetch('/api/external-links', {
-                        credentials: 'include'
-                    });
-
+                    const response = await fetch('/api/external-links', { credentials: 'include' });
                     const data = await response.json();
+                    if (!response.ok) throw new Error(data.error);
 
-                    if (!response.ok) {
-                        throw new Error(data.error || 'Erro ao carregar links');
-                    }
-
-                    // Verifica se a propriedade provides já está parseada
-                    const links = data.map(link => {
-                        return {
-                            ...link,
-                            provides: typeof link.provides === 'string' ? JSON.parse(link.provides) : link.provides
-                        };
-                    });
+                    const links = data.map(link => ({
+                        ...link,
+                        provides: typeof link.provides === 'string' ? JSON.parse(link.provides) : link.provides
+                    }));
 
                     renderLinks(links);
-
                 } catch (error) {
                     showToast(error.message, 'error');
-                    renderError();
+                    if (error.message.includes('Não autenticado')) window.location.href = '/login.html';
                 }
             }
 
-            // Render links
             function renderLinks(links) {
                 if (links.length === 0) {
                     linksGrid.innerHTML = `
-                        <div class="link-card" style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
-                            <h3 style="margin-bottom: 1rem;">Nenhum link criado ainda</h3>
-                            <p>Crie seu primeiro link para permitir que outros serviços se autentiquem com sua conta HAAP</p>
-                            <button class="btn btn-primary" style="margin-top: 1.5rem;" id="emptyCreateBtn">
+                        <div class="col-span-full glass p-12 text-center space-y-4">
+                            <div class="w-20 h-20 bg-indigo-500/10 rounded-full flex items-center justify-center mx-auto">
+                                <i class="fas fa-link text-3xl text-indigo-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold">Nenhum link criado</h3>
+                                <p class="text-gray-400">Comece criando seu primeiro link de integração.</p>
+                            </div>
+                            <button onclick="document.getElementById('createLinkModal').classList.remove('hidden')" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-all">
                                 Criar Primeiro Link
                             </button>
                         </div>
                     `;
-
-                    document.getElementById('emptyCreateBtn').addEventListener('click', () => {
-                        createLinkModal.style.display = 'flex';
-                    });
-
                     return;
                 }
 
-                linksGrid.innerHTML = '';
-
-                links.forEach(link => {
-                    const linkCard = document.createElement('div');
-                    linkCard.className = 'link-card';
-
-                    const provides = Array.isArray(link.provides) ? link.provides : [];
-
-                    linkCard.innerHTML = `
-                        <div class="link-header">
-                            <h3 class="link-title">${link.service_name}</h3>
-                            <span class="link-status ${link.is_active ? 'status-active' : 'status-inactive'}">
+                linksGrid.innerHTML = links.map(link => `
+                    <div class="glass p-6 rounded-2xl space-y-4 hover:border-indigo-500/30 transition-all group">
+                        <div class="flex items-start justify-between">
+                            <div class="space-y-1">
+                                <h3 class="text-lg font-bold group-hover:text-indigo-400 transition-colors">${link.service_name}</h3>
+                                <p class="text-xs text-gray-500">Criado em ${new Date(link.created_at).toLocaleDateString()}</p>
+                            </div>
+                            <span class="px-2 py-1 ${link.is_active ? 'bg-green-500/10 text-green-400 border-green-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'} text-[10px] font-bold uppercase rounded border">
                                 ${link.is_active ? 'Ativo' : 'Inativo'}
                             </span>
                         </div>
-                        <div class="link-meta">
-                            Criado em ${new Date(link.created_at).toLocaleDateString()}
-                        </div>
-                        <div class="link-permissions">
-                            ${provides.map(permission => `
-                                <span class="permission-tag">${getPermissionName(permission)}</span>
+                        
+                        <div class="flex flex-wrap gap-2">
+                            ${link.provides.map(p => `
+                                <span class="px-2 py-1 bg-white/5 text-gray-400 text-[10px] rounded-md border border-white/5">${getPermissionName(p)}</span>
                             `).join('')}
                         </div>
-                        <div class="link-actions">
-                            <button class="btn btn-sm btn-secondary" data-link-id="${link.id}" data-action="copy">
-                                Copiar URL
+
+                        <div class="pt-4 border-t border-white/5 flex items-center justify-between">
+                            <button onclick="copyToClipboard('${link.link_code}')" class="text-sm text-indigo-400 hover:text-indigo-300 font-medium flex items-center space-x-2 transition-colors">
+                                <i class="fas fa-copy"></i>
+                                <span>Copiar URL</span>
                             </button>
+                            <div class="flex space-x-2">
+                                <a href="${link.homepage_url}" target="_blank" class="p-2 text-gray-400 hover:text-white transition-colors" title="Visitar Homepage">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </div>
                         </div>
-                    `;
-
-                    linksGrid.appendChild(linkCard);
-                });
-
-                // Add event listeners to buttons
-                document.querySelectorAll('[data-action="copy"]').forEach(btn => {
-                    btn.addEventListener('click', async () => {
-                        const linkId = btn.getAttribute('data-link-id');
-                        const link = links.find(l => l.id == linkId);
-                        if (link) {
-                            const loginUrl = `${window.location.origin}/ext-login.html#link=${link.link_code}`;
-                            await navigator.clipboard.writeText(loginUrl);
-                            showToast('URL copiada para a área de transferência!', 'success');
-                        }
-                    });
-                });
-            }
-
-            function renderError() {
-                linksGrid.innerHTML = `
-                    <div class="link-card" style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
-                        <h3 style="margin-bottom: 1rem; color: var(--error)">Erro ao carregar links</h3>
-                        <p>Não foi possível carregar seus links de login externo. Tente recarregar a página.</p>
-                        <button class="btn btn-secondary" style="margin-top: 1.5rem;" onclick="window.location.reload()">
-                            Recarregar
-                        </button>
                     </div>
-                `;
+                `).join('');
             }
 
-            function getPermissionName(permission) {
-                switch(permission) {
-                    case 'id': return 'ID';
-                    case 'username': return 'Usuário';
-                    case 'email': return 'E-mail';
-                    case 'display_name': return 'Nome';
-                    case 'profile_picture': return 'Foto';
-                    default: return permission;
+            function getPermissionName(p) {
+                const names = { id: 'ID', username: 'Usuário', email: 'E-mail', display_name: 'Nome', profile_picture: 'Foto' };
+                return names[p] || p;
+            }
+
+            window.copyToClipboard = async (code) => {
+                const url = `${window.location.origin}/ext-login.html#link=${code}`;
+                try {
+                    await navigator.clipboard.writeText(url);
+                    showToast('URL copiada com sucesso!', 'success');
+                } catch (err) {
+                    showToast('Erro ao copiar URL', 'error');
                 }
-            }
+            };
 
-            // Create new link
-            createLinkBtn.addEventListener('click', () => {
-                createLinkModal.style.display = 'flex';
-            });
+            // Modal Controls
+            createLinkBtn.addEventListener('click', () => createLinkModal.classList.remove('hidden'));
+            closeModalBtn.addEventListener('click', () => createLinkModal.classList.add('hidden'));
+            cancelCreateBtn.addEventListener('click', () => createLinkModal.classList.add('hidden'));
 
-            closeModalBtn.addEventListener('click', () => {
-                createLinkModal.style.display = 'none';
-            });
-
-            cancelCreateBtn.addEventListener('click', () => {
-                createLinkModal.style.display = 'none';
-            });
-
+            // Create Link
             linkForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-
-                const serviceName = document.getElementById('serviceName').value;
-                const callbackUrl = document.getElementById('callbackUrl').value;
-                const homepageUrl = document.getElementById('homepageUrl').value;
-
-                const checkboxes = document.querySelectorAll('input[name="provides"]:checked');
-                const provides = Array.from(checkboxes).map(cb => cb.value);
+                const provides = Array.from(document.querySelectorAll('input[name="provides"]:checked')).map(cb => cb.value);
 
                 if (provides.length === 0) {
-                    showToast('Selecione pelo menos uma informação a ser fornecida', 'error');
+                    showToast('Selecione pelo menos uma permissão', 'error');
                     return;
                 }
 
                 try {
                     const response = await fetch('/api/external-links', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            service_name: serviceName,
-                            callback_url: callbackUrl,
-                            homepage_url: homepageUrl,
-                            provides: provides
+                            service_name: document.getElementById('serviceName').value,
+                            callback_url: document.getElementById('callbackUrl').value,
+                            homepage_url: document.getElementById('homepageUrl').value,
+                            provides
                         }),
                         credentials: 'include'
                     });
 
                     const data = await response.json();
-
-                    if (!response.ok) {
-                        throw new Error(data.error || 'Erro ao criar link');
-                    }
+                    if (!response.ok) throw new Error(data.error);
 
                     showToast('Link criado com sucesso!', 'success');
-                    createLinkModal.style.display = 'none';
+                    createLinkModal.classList.add('hidden');
                     linkForm.reset();
                     loadExternalLinks();
-
                 } catch (error) {
                     showToast(error.message, 'error');
                 }
             });
 
             function showToast(message, type) {
-                toast.textContent = message;
-                toast.className = 'toast ' + type;
-                toast.classList.add('show');
-
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                }, 5000);
+                toastMessage.textContent = message;
+                toastIcon.innerHTML = type === 'success' ? '<i class="fas fa-check-circle text-green-500"></i>' : '<i class="fas fa-exclamation-circle text-red-500"></i>';
+                toast.classList.remove('translate-x-full', 'opacity-0');
+                setTimeout(() => toast.classList.add('translate-x-full', 'opacity-0'), 5000);
             }
 
-            // Initial load
-            loadUserData();
             loadExternalLinks();
         });
     </script>
 </body>
+
 </html>
